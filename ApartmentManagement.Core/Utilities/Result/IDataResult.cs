@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace ApartmentManagement.Core.Utilities.Result
 {
-    interface IDataResult
+    public interface IDataResult<T>:IResult
     {
+        T Data { get; set; }
     }
 }

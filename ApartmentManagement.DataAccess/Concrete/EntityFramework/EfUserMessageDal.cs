@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ApartmentManagement.DataAccess.Concrete.EntityFramework
 {
-    public class EfUserMessageDal : EfRepositoryBase<UserMessage, ApartmentManagementDbContext>, IUserMessageDal
+    public class EfUserMessageDal : EfEntityRepositoryBase<UserMessage, ApartmentManagementDbContext>, IUserMessageDal
     {
     }
 }

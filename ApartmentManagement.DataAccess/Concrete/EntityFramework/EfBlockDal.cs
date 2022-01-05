@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ApartmentManagement.DataAccess.Concrete.EntityFramework
 {
-    public class EfBlockDal : EfRepositoryBase<Block, ApartmentManagementDbContext>, IBlockDal
+    public class EfBlockDal : EfEntityRepositoryBase<Block, ApartmentManagementDbContext>, IBlockDal
     {
     }
 }

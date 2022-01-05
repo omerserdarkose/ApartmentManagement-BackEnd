@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ApartmentManagement.DataAccess.Concrete.EntityFramework
 {
-    public class EfClaimDal : EfRepositoryBase<Claim, ApartmentManagementDbContext>, IClaimDal
+    public class EfClaimDal : EfEntityRepositoryBase<Claim, ApartmentManagementDbContext>, IClaimDal
     {
     }
 }

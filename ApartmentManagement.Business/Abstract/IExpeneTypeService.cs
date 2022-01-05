@@ -1,4 +1,5 @@
-﻿using ApartmentManagement.Entities;
+﻿using ApartmentManagement.Core.Utilities.Result;
+using ApartmentManagement.Entities;
 using ApartmentManagement.Entities.Dtos.ExpenseType;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ApartmentManagement.Business.Abstract
 {
-    public interface IExpensTypeService
+    public interface IExpeneTypeService
     {
         IDataResult<List<ExpenseTypeViewDto>> GetAll();
 

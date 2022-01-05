@@ -1,3 +1,4 @@
+using ApartmentManagement.Business.Mapping.AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,6 +29,7 @@ namespace ApartmentManagement.WebApi
         {
 
             services.AddControllers();
+            services.AddAutoMapper(typeof(MappingProfile));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ApartmentManagement.WebApi", Version = "v1" });

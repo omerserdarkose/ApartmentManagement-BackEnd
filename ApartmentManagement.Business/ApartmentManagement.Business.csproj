@@ -5,11 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Concrete\" />
+    <ProjectReference Include="..\ApartmentManagement.DataAccess\ApartmentManagement.DataAccess.csproj" />
+    <ProjectReference Include="..\ApartmentManagement.Entities\ApartmentManagement.Entities.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ApartmentManagement.Entities\ApartmentManagement.Entities.csproj" />
+    <PackageReference Include="Autofac" Version="6.3.0" />
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
   </ItemGroup>
 
 </Project>

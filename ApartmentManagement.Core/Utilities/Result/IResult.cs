@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace ApartmentManagement.Core.Utilities.Result
 {
-    interface IResult
+    public interface IResult
     {
+        bool Success { get; set; }
+        string Message { get; set; }
     }
 }

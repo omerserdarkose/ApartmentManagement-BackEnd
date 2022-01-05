@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ApartmentManagement.DataAccess.Concrete.EntityFramework
 {
-    public class EfExpenseDal : EfRepositoryBase<Expense, ApartmentManagementDbContext>, IExpenseDal
+    public class EfExpenseDal : EfEntityRepositoryBase<Expense, ApartmentManagementDbContext>, IExpenseDal
     {
     }
 }

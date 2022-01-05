@@ -3,6 +3,7 @@ using ApartmentManagement.Entities.Concrete;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
+/*Scaffold-DbContext "Server=DRMORAREES\SQLEXPRESS01;Database=ApartmentManagementDb;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Concrete/ -ContextDir ../ApartmentManagement.DataAccess/Concrete/EntityFramework/ -Context ApartmentManagementDbContext*/
 
 #nullable disable
 

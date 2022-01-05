@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ApartmentManagement.DataAccess.Concrete.EntityFramework
 {
-    public class EfCarDal : EfRepositoryBase<Car, ApartmentManagementDbContext>, ICarDal
+    public class EfCarDal : EfEntityRepositoryBase<Car, ApartmentManagementDbContext>, ICarDal
     {
     }
 }
