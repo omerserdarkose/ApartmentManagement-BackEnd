@@ -8,9 +8,5 @@ namespace ApartmentManagement.Core.Entities
 {
     public interface IEntity
     {
-        int IuserId { get; set; }
-        DateTime Idate { get; set; }
-        int? UuserId { get; set; }
-        DateTime? Udate { get; set; }
     }
 }

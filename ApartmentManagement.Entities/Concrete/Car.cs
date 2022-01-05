@@ -6,12 +6,12 @@ using System.Collections.Generic;
 
 namespace ApartmentManagement.Entities.Concrete
 {
-    public partial class Car : IEntity
+    public partial class Car : IEntity, IInsert, IUpdate, IActive
     {
         public int Id { get; set; }
         public int UserId { get; set; }
         public string LicensePlate { get; set; }
-        public bool? IsActive { get; set; }
+        public bool IsActive { get; set; }
         public int IuserId { get; set; }
         public DateTime Idate { get; set; }
         public int? UuserId { get; set; }

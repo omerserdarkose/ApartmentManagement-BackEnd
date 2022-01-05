@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace ApartmentManagement.Entities.Concrete
 {
-    public partial class User : IEntity
+    public partial class User : IEntity, IInsert, IUpdate, IActive
     {
         public User()
         {
@@ -23,7 +23,7 @@ namespace ApartmentManagement.Entities.Concrete
         public string Email { get; set; }
         public byte[] PasswordSalt { get; set; }
         public byte[] PasswordHash { get; set; }
-        public bool? IsActive { get; set; }
+        public bool IsActive { get; set; }
         public int IuserId { get; set; }
         public DateTime Idate { get; set; }
         public int? UuserId { get; set; }

@@ -6,13 +6,13 @@ using System.Collections.Generic;
 
 namespace ApartmentManagement.Entities.Concrete
 {
-    public partial class UserMessage : IEntity
+    public partial class UserMessage : IEntity, IInsert, IUpdate
     {
         public int Id { get; set; }
         public int FromUserId { get; set; }
         public int ToUserId { get; set; }
         public int MessageId { get; set; }
-        public bool? IsNew { get; set; }
+        public bool IsNew { get; set; }
         public bool IsRead { get; set; }
         public bool IsActiveFuser { get; set; }
         public bool IsActiveToUser { get; set; }

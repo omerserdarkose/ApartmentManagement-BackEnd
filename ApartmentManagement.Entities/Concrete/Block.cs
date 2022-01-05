@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace ApartmentManagement.Entities.Concrete
 {
-    public partial class Block : IEntity
+    public partial class Block : IEntity, IInsert, IUpdate
     {
         public Block()
         {

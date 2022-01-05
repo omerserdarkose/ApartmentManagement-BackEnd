@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace ApartmentManagement.Core.Entities
 {
-    public interface IActive
+    public interface IUpdate
     {
-        bool IsActive { get; set; }
+        int? UuserId { get; set; }
+        DateTime? Udate { get; set; }
     }
 }

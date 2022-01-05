@@ -6,13 +6,13 @@ using System.Collections.Generic;
 
 namespace ApartmentManagement.Entities.Concrete
 {
-    public partial class UserExpense : IEntity
+    public partial class UserExpense : IEntity, IInsert, IUpdate, IActive
     {
         public int Id { get; set; }
         public int ApartmentId { get; set; }
         public int ExpenseId { get; set; }
         public bool DidPay { get; set; }
-        public bool? IsActive { get; set; }
+        public bool IsActive { get; set; }
         public int IuserId { get; set; }
         public DateTime Idate { get; set; }
         public int? UuserId { get; set; }

@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApartmentManagement.Core.Entities
+namespace ApartmentManagement.Core.Utilities.Result
 {
-    public interface IActive
+    interface Result
     {
-        bool IsActive { get; set; }
     }
 }

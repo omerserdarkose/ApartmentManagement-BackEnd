@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace ApartmentManagement.Entities.Concrete
 {
-    public partial class Expense : IEntity
+    public partial class Expense : IEntity, IInsert, IUpdate, IActive
     {
         public Expense()
         {
@@ -18,7 +18,7 @@ namespace ApartmentManagement.Entities.Concrete
         public string Name { get; set; }
         public decimal Amount { get; set; }
         public DateTime Date { get; set; }
-        public bool? IsActive { get; set; }
+        public bool IsActive { get; set; }
         public int IuserId { get; set; }
         public DateTime Idate { get; set; }
         public int? UuserId { get; set; }
