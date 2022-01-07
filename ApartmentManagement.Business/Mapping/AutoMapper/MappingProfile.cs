@@ -14,6 +14,9 @@ namespace ApartmentManagement.Business.Mapping.AutoMapper
         public MappingProfile()
         {
             CreateMap<ExpenseType, ExpenseTypeViewDto>();
+            CreateMap<ExpenseTypeAddDto, ExpenseType>().ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name.Trim()));
+            CreateMap<ExpenseTypeDeleteDto, ExpenseType>();
+            CreateMap<ExpenseTypeUpdateDto, ExpenseType>().ForMember(dest=>dest.Name,opt=>opt.MapFrom(src=>src.Name.Trim()));
         }
     }
 }

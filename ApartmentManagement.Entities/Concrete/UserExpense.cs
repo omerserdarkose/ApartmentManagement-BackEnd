@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace ApartmentManagement.Entities.Concrete
 {
-    public partial class UserExpense : IEntity, IInsert, IUpdate, IActive
+    public partial class UserExpense : IEntity
     {
         public int Id { get; set; }
         public int ApartmentId { get; set; }
@@ -17,8 +17,5 @@ namespace ApartmentManagement.Entities.Concrete
         public DateTime Idate { get; set; }
         public int? UuserId { get; set; }
         public DateTime? Udate { get; set; }
-
-        public virtual Apartment Apartment { get; set; }
-        public virtual Expense Expense { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using ApartmentManagement.Business.Abstract;
 using ApartmentManagement.Business.Concrete;
 using ApartmentManagement.Business.Mapping.AutoMapper;
+using ApartmentManagement.Core.Entities;
 using ApartmentManagement.DataAccess.Abstract;
 using ApartmentManagement.DataAccess.Concrete.EntityFramework;
 using Autofac;
@@ -18,8 +19,10 @@ namespace ApartmentManagement.Business.DependencyResolvers.Autofac
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<ExpenseTypeManager>().As<IExpeneTypeService>();
-
             builder.RegisterType<EfExpenseTypeDal>().As<IExpenseTypeDal>();
+            
+            builder.RegisterType<UserManager>().As<IUserService>();
+            builder.RegisterType<EfUserDal>().As<IUserDal>();
         }
     }
 }

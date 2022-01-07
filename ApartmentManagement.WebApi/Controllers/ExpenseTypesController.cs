@@ -1,8 +1,10 @@
 ﻿using ApartmentManagement.Business.Abstract;
+using ApartmentManagement.Entities.Dtos.ExpenseType;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 
@@ -19,12 +21,11 @@ namespace ApartmentManagement.WebApi.Controllers
             _expeneTypeManager = expeneTypeManager;
         }
 
-        // GET: api/<ExpenseTypesController>
         [HttpGet]
         public IActionResult GetAll()
         {
-            var result=_expeneTypeManager.GetAll();
-            
+            var result = _expeneTypeManager.GetAll();
+
             if (!result.Success)
             {
                 return BadRequest(result.Message);
@@ -33,22 +34,43 @@ namespace ApartmentManagement.WebApi.Controllers
             return Ok(result.Data);
         }
 
-        // POST api/<ExpenseTypesController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Add([FromBody] ExpenseTypeAddDto newExpenseType)
         {
+            var result = _expeneTypeManager.Add(newExpenseType);
+
+            if (!result.Success)
+            {
+                return BadRequest(result.Message);
+            }
+
+            return Ok(result);
         }
 
-        // PUT api/<ExpenseTypesController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut]
+        public IActionResult Update([FromBody] ExpenseTypeUpdateDto updateExpenseType)
         {
+            var result = _expeneTypeManager.Update(updateExpenseType);
+
+            if (!result.Success)
+            {
+                return BadRequest(result.Message);
+            }
+
+            return Ok(result);
         }
 
-        // DELETE api/<ExpenseTypesController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int deleteExpenseTypeId)
         {
+            var result = _expeneTypeManager.Delete(deleteExpenseTypeId);
+
+            if (!result.Success)
+            {
+                return BadRequest(result.Message);
+            }
+
+            return Ok(result);
         }
     }
 }

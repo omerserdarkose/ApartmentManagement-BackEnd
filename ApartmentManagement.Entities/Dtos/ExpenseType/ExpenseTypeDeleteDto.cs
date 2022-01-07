@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace ApartmentManagement.Entities.Dtos.ExpenseType
 {
-    public class ExpenseTypeDeleteDto:IDto,IUpdate
+    public class ExpenseTypeDeleteDto:IDto
     {
         public short Id { get; set; }
-        public int? UuserId { get; set; }
-        public DateTime? Udate { get; set; }
     }
 }

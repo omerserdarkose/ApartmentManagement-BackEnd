@@ -6,13 +6,8 @@ using System.Collections.Generic;
 
 namespace ApartmentManagement.Entities.Concrete
 {
-    public partial class Expense : IEntity, IInsert, IUpdate, IActive
+    public partial class Expense : IEntity
     {
-        public Expense()
-        {
-            UserExpenses = new HashSet<UserExpense>();
-        }
-
         public int Id { get; set; }
         public short TypeId { get; set; }
         public string Name { get; set; }
@@ -23,8 +18,5 @@ namespace ApartmentManagement.Entities.Concrete
         public DateTime Idate { get; set; }
         public int? UuserId { get; set; }
         public DateTime? Udate { get; set; }
-
-        public virtual ExpenseType Type { get; set; }
-        public virtual ICollection<UserExpense> UserExpenses { get; set; }
     }
 }

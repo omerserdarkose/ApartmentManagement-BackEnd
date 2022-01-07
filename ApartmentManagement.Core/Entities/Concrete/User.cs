@@ -4,13 +4,16 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace ApartmentManagement.Entities.Concrete
+namespace ApartmentManagement.Core.Entities.Concrete
 {
-    public partial class UserDetail : IEntity
+    public partial class User : IEntity
     {
         public int Id { get; set; }
-        public string PhoneNumber { get; set; }
-        public string IdentityNo { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+        public byte[] PasswordSalt { get; set; }
+        public byte[] PasswordHash { get; set; }
         public bool IsActive { get; set; }
         public int IuserId { get; set; }
         public DateTime Idate { get; set; }

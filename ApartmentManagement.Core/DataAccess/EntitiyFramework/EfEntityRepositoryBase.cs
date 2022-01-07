@@ -23,6 +23,7 @@ namespace ApartmentManagement.Core.DataAccess.EntitiyFramework
             }
         }
 
+        //yaklasim olarak gercek silme yapmiyorum ama gerekirse diye kullanilabilir
         public void Delete(TEntity entity)
         {
             using (var context = new TContext())

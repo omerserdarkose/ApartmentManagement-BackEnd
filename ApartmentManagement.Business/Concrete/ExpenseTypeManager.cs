@@ -1,7 +1,9 @@
 ﻿using ApartmentManagement.Business.Abstract;
+using ApartmentManagement.Business.Constant;
+using ApartmentManagement.Core.Entities;
 using ApartmentManagement.Core.Utilities.Result;
 using ApartmentManagement.DataAccess.Abstract;
-using ApartmentManagement.Entities;
+using ApartmentManagement.Entities.Concrete;
 using ApartmentManagement.Entities.Dtos.ExpenseType;
 using AutoMapper;
 using System;
@@ -25,17 +27,28 @@ namespace ApartmentManagement.Business.Concrete
 
         public IResult Add(ExpenseTypeAddDto expenseTypeAddDto)
         {
-            throw new NotImplementedException();
+            var mapExpenseType = _mapper.Map<ExpenseType>(expenseTypeAddDto);
+            _expenseTypeDal.Add(mapExpenseType);
+
+            return new SuccessResult(Messages.ExpenseTypeAdded);
         }
 
-        public IResult Delete(ExpenseTypeDeleteDto expenseTypeDeleteDto)
+        public IResult Delete(int expenseTypeId)
         {
-            throw new NotImplementedException();
+            var expenseType=_expenseTypeDal.Get(x => x.Id == expenseTypeId);
+            if(expenseType is null)
+            {
+                return new ErrorResult(Messages.ExpenseTypeNotFound);
+            }
+            expenseType.IsActive = false;
+            _expenseTypeDal.Update(expenseType);
+
+            return new SuccessResult(Messages.ExpenseTypeDeleted);
         }
 
         public IDataResult<List<ExpenseTypeViewDto>> GetAll()
         {
-            var expenseTypeList = _expenseTypeDal.GetList();
+            var expenseTypeList = _expenseTypeDal.GetList(x=>x.IsActive==true);
             var expenseTypeViewList = _mapper.Map<List<ExpenseTypeViewDto>>(expenseTypeList);
 
             return new SuccessDataResult<List<ExpenseTypeViewDto>>(expenseTypeViewList);
@@ -43,7 +56,10 @@ namespace ApartmentManagement.Business.Concrete
 
         public IResult Update(ExpenseTypeUpdateDto expenseTypeUpdateDto)
         {
-            throw new NotImplementedException();
+            var mapExpenseType = _mapper.Map<ExpenseType>(expenseTypeUpdateDto);
+            _expenseTypeDal.Update(mapExpenseType);
+
+            return new SuccessResult(Messages.ExpenseTypeUpdated);
         }
     }
 }

@@ -15,7 +15,7 @@ namespace ApartmentManagement.Business.Abstract
 
         IResult Add(ExpenseTypeAddDto expenseTypeAddDto);
 
-        IResult Delete(ExpenseTypeDeleteDto expenseTypeDeleteDto);
+        IResult Delete(int expenseTypeId);
 
         IResult Update(ExpenseTypeUpdateDto expenseTypeUpdateDto);
     }

@@ -6,13 +6,8 @@ using System.Collections.Generic;
 
 namespace ApartmentManagement.Entities.Concrete
 {
-    public partial class Message : IEntity, IInsert, IUpdate
+    public partial class Message : IEntity
     {
-        public Message()
-        {
-            UserMessages = new HashSet<UserMessage>();
-        }
-
         public int Id { get; set; }
         public string Subject { get; set; }
         public string Message1 { get; set; }
@@ -20,7 +15,5 @@ namespace ApartmentManagement.Entities.Concrete
         public DateTime Idate { get; set; }
         public int? UuserId { get; set; }
         public DateTime? Udate { get; set; }
-
-        public virtual ICollection<UserMessage> UserMessages { get; set; }
     }
 }
