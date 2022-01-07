@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper.Configuration.Conventions;
 
 namespace ApartmentManagement.Business.Abstract
 {
@@ -15,10 +16,16 @@ namespace ApartmentManagement.Business.Abstract
 
         User GetByMail(string mail);
 
-        IResult Add(UserAddDto newUser);
+        int GetUserId(string mail);
+
+        List<UserClaimsViewDto> GetClaims(int userId);
+
+        IResult Add(User newUser);
+
+        IResult AddWithDetails(UserAddDto newUserWithDetails);
 
         IResult Delete(int userId);
 
-        IResult Update(UserUpdateDto updateUser);
+        IResult Update(UserUpdateDto userUpdateInfo);
     }
 }

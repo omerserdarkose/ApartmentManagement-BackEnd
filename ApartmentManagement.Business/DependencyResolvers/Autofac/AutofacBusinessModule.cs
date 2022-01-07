@@ -11,6 +11,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ApartmentManagement.Core.Utilities.Security;
+using ApartmentManagement.Core.Utilities.Security.JWT;
 
 namespace ApartmentManagement.Business.DependencyResolvers.Autofac
 {
@@ -23,6 +25,9 @@ namespace ApartmentManagement.Business.DependencyResolvers.Autofac
             
             builder.RegisterType<UserManager>().As<IUserService>();
             builder.RegisterType<EfUserDal>().As<IUserDal>();
+            builder.RegisterType<AuthManager>().As<IAuthService>();
+
+            builder.RegisterType<JWTHelper>().As<ITokenHelper>();
         }
     }
 }

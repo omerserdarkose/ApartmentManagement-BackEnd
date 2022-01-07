@@ -13,7 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace ApartmentManagement.Core.Utilities.Security.JWT
 {
-    public class JWTHelper:ITokenHelper
+    public class JWTHelper : ITokenHelper
     {
         private IConfiguration Configuration { get; }
         private TokenOptions _tokenOptions;
@@ -64,7 +64,7 @@ namespace ApartmentManagement.Core.Utilities.Security.JWT
             claims.AddNameIdentifier(user.Id.ToString());
             claims.AddEmail(user.Email);
             claims.AddName($"{user.FirstName} {user.LastName}");
-            claims.AddRoles(userClaims.Select(x=>x.Name).ToArray());
+            claims.AddRoles(userClaims.Select(x => x.Name).ToArray());
 
             return claims;
         }

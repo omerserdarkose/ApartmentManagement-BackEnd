@@ -39,5 +39,30 @@ namespace ApartmentManagement.DataAccess.Concrete.EntityFramework
             }
 
         }
+
+        public List<UserClaimsViewDto> GetClaims(int userId)
+        {
+            using (var context = new ApartmentManagementDbContext())
+            {
+                var result = from uc in context.UserClaims
+                             join c in context.Claims
+                                 on uc.ClaimId equals c.Id
+                             where uc.Id == userId && c.IsActive == true
+                             select new UserClaimsViewDto()
+                             {
+                                 Id = c.Id,
+                                 ClaimName = c.Name
+                             };
+                return result.ToList();
+            }
+        }
+
+        public int GetUserId(string eMail)
+        {
+            using (var context = new ApartmentManagementDbContext())
+            {
+                return context.Set<User>().SingleOrDefault(x=>x.Email==eMail).Id;
+            }
+        }
     }
 }

@@ -21,37 +21,49 @@ namespace ApartmentManagement.WebApi.Controllers
             _userManager = userManager;
         }
 
-        // GET: api/<UsersController>
         [HttpGet]
         public IActionResult Get()
         {
             return Ok(_userManager.GetAll());
         }
 
-        // GET api/<UsersController>/5
-        [HttpGet("{mail}")]
-        public IActionResult Get(string mail)
-        {
 
-            return Ok(_userManager.GetByMail(mail));
-        }
-
-        // POST api/<UsersController>
         [HttpPost]
-        public void Add([FromBody] UserAddDto newUser)
+        public IActionResult Add([FromBody] UserAddDto newUser)
         {
+            var result = _userManager.AddWithDetails(newUser);
+            if (!result.Success)
+            {
+                return BadRequest(result.Message);
+            }
+
+            return Ok(result.Message);
         }
 
-        // PUT api/<UsersController>/5
+
         [HttpPut]
-        public void Update([FromBody] UserUpdateDto userUpdate)
+        public IActionResult Update([FromBody] UserUpdateDto userUpdateInfo)
         {
+            var result = _userManager.Update(userUpdateInfo);
+            if (!result.Success)
+            {
+                return BadRequest(result.Message);
+            }
+
+            return Ok(result.Message);
         }
 
-        // DELETE api/<UsersController>/5
+
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int userId)
         {
+            var result=_userManager.Delete(userId);
+            if (!result.Success)
+            {
+                return NotFound(result.Message);
+            }
+
+            return Ok(result.Message);
         }
     }
 }
