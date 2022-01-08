@@ -28,10 +28,6 @@ namespace ApartmentManagement.Business.Concrete
         {
             var userDetail = _userDetailDal.GetForView(userId);
 
-            //var userDetail2 = _userDetailDal.Get(x=>x.Id==userId);
-
-
-
             if (userDetail is null)
             {
                 return new ErrorDataResult<UserDetailViewDto>(Messages.UserDetailNotFound);

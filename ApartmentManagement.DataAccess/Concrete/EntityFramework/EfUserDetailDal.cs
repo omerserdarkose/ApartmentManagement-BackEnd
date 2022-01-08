@@ -30,24 +30,6 @@ namespace ApartmentManagement.DataAccess.Concrete.EntityFramework
                 return result.Single();
             }
         }
-
-        /*public override UserDetail Get(Expression<Func<UserDetail, bool>> filter)
-        {
-            using (var context = new ApartmentManagementDbContext())
-            {
-                var result = from userDetail in context.UserDetails
-                             join user in context.Users
-                                 on userDetail.Id equals user.Id
-                             where filter
-                             select new UserDetailViewDto()
-                             {
-                                 Name = user.FirstName + " " + user.LastName,
-                                 PhoneNumber = userDetail.PhoneNumber,
-                                 IdentityNo = userDetail.IdentityNo
-                             };
-                return result;
-            }
-        }*/
     }
 }
 

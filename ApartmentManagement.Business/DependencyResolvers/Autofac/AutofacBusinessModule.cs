@@ -9,10 +9,15 @@ using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using ApartmentManagement.Core.Utilities.Interceptors;
 using ApartmentManagement.Core.Utilities.Security;
 using ApartmentManagement.Core.Utilities.Security.JWT;
+using Autofac.Extras.DynamicProxy;
+using Castle.DynamicProxy;
+using Module = Autofac.Module;
 
 namespace ApartmentManagement.Business.DependencyResolvers.Autofac
 {
@@ -31,6 +36,13 @@ namespace ApartmentManagement.Business.DependencyResolvers.Autofac
 
             builder.RegisterType<EfUserDetailDal>().As<IUserDetailDal>();
             builder.RegisterType<UserDetailManager>().As<IUserDetailService>();
+
+            //yurutulmekteolan tum assemblydeki implemente edilmis interfaceler icin interceptor ile mudahaleyi etkinlestiriyoruz> 
+            builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly()).AsImplementedInterfaces()
+                .EnableInterfaceInterceptors(new ProxyGenerationOptions()
+                {
+                    Selector = new AspectInterceptorSelector()
+                }).SingleInstance();
         }
     }
 }

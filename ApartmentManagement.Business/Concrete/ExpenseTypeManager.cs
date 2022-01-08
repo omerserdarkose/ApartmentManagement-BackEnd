@@ -11,6 +11,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ApartmentManagement.Business.Validation.FluentValidation;
+using ApartmentManagement.Core.Aspects.Autofac;
 
 namespace ApartmentManagement.Business.Concrete
 {
@@ -25,6 +27,7 @@ namespace ApartmentManagement.Business.Concrete
             _mapper = mapper;
         }
 
+        [ValidationAspect(typeof(ExpenseTypeValidator))]
         public IResult Add(ExpenseTypeAddDto expenseTypeAddDto)
         {
             var mapExpenseType = _mapper.Map<ExpenseType>(expenseTypeAddDto);
