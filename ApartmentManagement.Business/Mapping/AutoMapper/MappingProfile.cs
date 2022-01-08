@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using ApartmentManagement.Core.Entities.Concrete;
 using ApartmentManagement.Core.Utilities.Result;
 using ApartmentManagement.Entities.Dtos.User;
+using ApartmentManagement.Entities.Dtos.UserDetail;
 using Autofac.Features.Scanning;
 
 namespace ApartmentManagement.Business.Mapping.AutoMapper
@@ -38,6 +39,10 @@ namespace ApartmentManagement.Business.Mapping.AutoMapper
             CreateMap<User, UserViewDto>();
             CreateMap<UserViewDto, User>();
             CreateMap<UserUpdateDto, User>();
+
+
+            CreateMap<UserDetailAddDto,UserDetail>();
+            CreateMap<UserDetailUpdateDto, UserDetail>();
 
 
 

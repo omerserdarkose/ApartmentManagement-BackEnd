@@ -24,6 +24,6 @@ namespace ApartmentManagement.Business.Constant
         public static string UserDetailAlreadyExist= "Bu Kullanıcıya Ait Detay Bilgileri Zaten Mevcut";
         public static string UserDetailAdded="Kullanıcı Detayları Eklendi";
         public static string UserDetailRemoved = "Kullanıcı Detayları Kaldırıldı";
-        public static string UserDetailUpdated= "Kullanıcı Detayları Güncelledi";;
+        public static string UserDetailUpdated= "Kullanıcı Detayları Güncelledi";
     }
 }

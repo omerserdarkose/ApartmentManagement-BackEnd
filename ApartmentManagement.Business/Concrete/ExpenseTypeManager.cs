@@ -43,7 +43,7 @@ namespace ApartmentManagement.Business.Concrete
             expenseType.IsActive = false;
             _expenseTypeDal.Update(expenseType);
 
-            return new SuccessResult(Messages.ExpenseTypeDeleted);
+            return new SuccessResult(Messages.ExpenseTypeRemoved);
         }
 
         public IDataResult<List<ExpenseTypeViewDto>> GetAll()

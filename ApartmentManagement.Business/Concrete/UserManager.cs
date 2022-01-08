@@ -78,7 +78,7 @@ namespace ApartmentManagement.Business.Concrete
             user.IsActive = false;
             _userDal.Update(user);
 
-            return new SuccessResult(Messages.UserDeleted);
+            return new SuccessResult(Messages.UserRemoved);
         }
 
         public IResult Update(UserUpdateDto userUpdateInfo)

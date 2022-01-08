@@ -30,6 +30,7 @@ namespace ApartmentManagement.Business.DependencyResolvers.Autofac
             builder.RegisterType<JWTHelper>().As<ITokenHelper>();
 
             builder.RegisterType<EfUserDetailDal>().As<IUserDetailDal>();
+            builder.RegisterType<UserDetailManager>().As<IUserDetailService>();
         }
     }
 }
