@@ -34,6 +34,14 @@ namespace ApartmentManagement.Core.DataAccess.EntitiyFramework
             }
         }
 
+        public bool Any(Expression<Func<TEntity, bool>> filter)
+        {
+            using (var context = new TContext())
+            {
+                return context.Set<TEntity>().Any(filter);
+            }
+        }
+
         public virtual TEntity Get(Expression<Func<TEntity, bool>> filter)
         {
             using (var context = new TContext())

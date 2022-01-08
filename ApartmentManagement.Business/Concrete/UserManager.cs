@@ -17,7 +17,7 @@ namespace ApartmentManagement.Business.Concrete
         //private IAuthService _authManager;
         private IMapper _mapper;
 
-        public UserManager(IUserDal userDal, /*IAuthService authManager,*/ IMapper mapper)
+        public UserManager(IUserDal userDal, /*IAuthService authManager*/ IMapper mapper)
         {
             _userDal = userDal;
             //_authManager = authManager;

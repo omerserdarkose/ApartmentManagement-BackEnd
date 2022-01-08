@@ -43,7 +43,7 @@ namespace ApartmentManagement.WebApi.Controllers
         }
 
         [HttpPost("{mail}")]
-        public IActionResult PassordReset(string mail)
+        public IActionResult PasswordReset(string mail)
         {
             var passReset = _authManager.PasswordReset(mail);
 
