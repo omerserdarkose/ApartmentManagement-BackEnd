@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace ApartmentManagement.WebApi.Controllers
@@ -20,6 +21,7 @@ namespace ApartmentManagement.WebApi.Controllers
         {
             _expeneTypeManager = expeneTypeManager;
         }
+
 
         [HttpGet]
         public IActionResult GetAll()

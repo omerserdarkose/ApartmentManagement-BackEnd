@@ -17,7 +17,7 @@ namespace ApartmentManagement.Core.Utilities.Interceptors
         //IInvocation calisacak olan methodu temsil ediyor
         protected virtual void OnBefore(IInvocation invocation) { }
         protected virtual void OnAfter(IInvocation invocation) { }
-        protected virtual void OnException(IInvocation invocation) { }
+        protected virtual void OnException(IInvocation invocation,Exception exception) { }
         protected virtual void OnSuccess(IInvocation invocation) { }
 
         //genel akis
@@ -30,10 +30,10 @@ namespace ApartmentManagement.Core.Utilities.Interceptors
             {
                 invocation.Proceed();
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 isSuccess = false;
-                OnException(invocation);
+                OnException(invocation,e);
                 throw;
             }
             finally

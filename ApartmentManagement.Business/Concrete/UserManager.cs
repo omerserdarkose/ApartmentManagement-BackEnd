@@ -2,6 +2,7 @@
 using System.Linq;
 using ApartmentManagement.Business.Abstract;
 using ApartmentManagement.Business.Constant;
+using ApartmentManagement.Core.Aspects.Autofac;
 using ApartmentManagement.Core.Entities.Concrete;
 using ApartmentManagement.Core.Utilities.Result;
 using ApartmentManagement.DataAccess.Abstract;
@@ -37,6 +38,7 @@ namespace ApartmentManagement.Business.Concrete
             return new SuccessResult();
         }
 
+        //[TransactionScopeAspect]
         public IResult AddWithDetails(UserAddDto newUserWithDetails)
         {
             /*var result = _authManager.UserNotExists(newUserWithDetails.Email);
