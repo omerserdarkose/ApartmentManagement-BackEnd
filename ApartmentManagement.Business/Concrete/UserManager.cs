@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using ApartmentManagement.Business.Abstract;
 using ApartmentManagement.Business.Constant;
 using ApartmentManagement.Core.Aspects.Autofac;
@@ -13,6 +14,7 @@ using ApartmentManagement.Entities.Concrete;
 using ApartmentManagement.Entities.Dtos.User;
 using ApartmentManagement.Entities.Dtos.UserDetail;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 
 namespace ApartmentManagement.Business.Concrete
 {
@@ -21,12 +23,17 @@ namespace ApartmentManagement.Business.Concrete
         private IUserDal _userDal;
         private IUserDetailService _userDetailManager;
         private IMapper _mapper;
+        private IHttpContextAccessor _httpContextAccessor;
+        private int _currentUserId;
 
-        public UserManager(IUserDal userDal, IMapper mapper, IUserDetailService userDetailManager)
+        public UserManager(IUserDal userDal, IMapper mapper, IUserDetailService userDetailManager, IHttpContextAccessor httpContextAccessor)
         {
             _userDal = userDal;
             _mapper = mapper;
             _userDetailManager = userDetailManager;
+            _httpContextAccessor = httpContextAccessor;
+            _currentUserId = Convert.ToInt32(_httpContextAccessor.HttpContext.User.Claims
+                .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value);
         }
 
         public IDataResult<List<UserViewDto>> GetAll()
@@ -38,8 +45,8 @@ namespace ApartmentManagement.Business.Concrete
 
         public IResult Add(User newUser)
         {
-            //newUser.IuserId = currentUserId;
-            //newUser.Idate = Datetime.Now;
+            newUser.IuserId = _currentUserId;
+            newUser.Idate = DateTime.Now;
             _userDal.Add(newUser);
             return new SuccessResult();
         }
@@ -53,7 +60,6 @@ namespace ApartmentManagement.Business.Concrete
             {
                 return new ErrorResult(Messages.UserAlreadyExist);
             }
-
 
             var password = PasswordHelper.CreatePassword();
 
@@ -104,6 +110,8 @@ namespace ApartmentManagement.Business.Concrete
             }
 
             user.IsActive = false;
+            user.UuserId = _currentUserId;
+            user.Udate=DateTime.Now;
             _userDal.Update(user);
 
             return new SuccessResult(Messages.UserRemoved);
@@ -113,8 +121,8 @@ namespace ApartmentManagement.Business.Concrete
         {
             var updateUser = GetById(userUpdateInfo.Id);
             updateUser = _mapper.Map(userUpdateInfo, updateUser);
-            //updateUser.UuserId = currentUserId;
-            //updateUser.Udate = Datetime.Now;
+            updateUser.UuserId = _currentUserId;
+            updateUser.Udate = DateTime.Now;
             _userDal.Update(updateUser);
 
             return new SuccessResult(Messages.UserUpdated);

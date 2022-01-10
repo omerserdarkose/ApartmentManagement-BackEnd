@@ -30,5 +30,7 @@ namespace ApartmentManagement.Business.Constant
         public static string UserAddFailed = "Kullanıcı Ekleme İşlemi Başarısız!";
         public static string UserDetailAddFailed = "Kullanıcı Detay Ekleme İşlemi Başarısız!";
         public static string MessageSendAll = "Tüm Kullanıcılara Mesaj Gönderildi";
+        public static string UserMessageIncomingNotExist="Gelen Mesaj Kutunuz Boş";
+        public static string UserMessageSentNotExist="Giden Mesaj Kutunuz Boş";
     }
 }

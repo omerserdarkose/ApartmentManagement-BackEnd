@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using ApartmentManagement.Business.Abstract;
@@ -10,6 +11,7 @@ using ApartmentManagement.DataAccess.Abstract;
 using ApartmentManagement.Entities.Concrete;
 using ApartmentManagement.Entities.Dtos.UserDetail;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 
 namespace ApartmentManagement.Business.Concrete
 {
@@ -17,11 +19,16 @@ namespace ApartmentManagement.Business.Concrete
     {
         private IUserDetailDal _userDetailDal;
         private IMapper _mapper;
+        private IHttpContextAccessor _httpContextAccessor;
+        private int _currentUserId;
 
-        public UserDetailManager(IUserDetailDal userDetailDal, IMapper mapper)
+        public UserDetailManager(IUserDetailDal userDetailDal, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             _userDetailDal = userDetailDal;
             _mapper = mapper;
+            _httpContextAccessor = httpContextAccessor;
+            _currentUserId = Convert.ToInt32(_httpContextAccessor.HttpContext.User.Claims
+                .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value);
         }
 
         public IDataResult<UserDetailViewDto> GetById(int userId)
@@ -46,8 +53,8 @@ namespace ApartmentManagement.Business.Concrete
             }
 
             var newUserDetail=_mapper.Map<UserDetail>(userDetailAdd);
-            //newUserDetail.IUser=blabla;
-            //newUserDetail.IDate=Datetime.Now;
+            newUserDetail.IuserId=_currentUserId;
+            newUserDetail.Idate=DateTime.Now;
 
             _userDetailDal.Add(newUserDetail);
 
@@ -63,8 +70,8 @@ namespace ApartmentManagement.Business.Concrete
                 return new ErrorResult(Messages.UserDetailNotFound);
             }
 
-            //userDetailCheck.UuserId = blabla;
-            //userDetailCheck.Udate = DateTime.Now;
+            userDetail.UuserId = _currentUserId;
+            userDetail.Udate = DateTime.Now;
 
             userDetail.IsActive = false;
             _userDetailDal.Update(userDetail);
@@ -84,8 +91,8 @@ namespace ApartmentManagement.Business.Concrete
 
             userDetail = _mapper.Map(userDetailUpdate, userDetail);
 
-            //userDetail.UuserId = blabla;
-            //userDetail.Udate = DateTime.Now;
+            userDetail.UuserId = _currentUserId;
+            userDetail.Udate = DateTime.Now;
 
             _userDetailDal.Update(userDetail);
 

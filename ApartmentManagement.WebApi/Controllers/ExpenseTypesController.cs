@@ -15,18 +15,18 @@ namespace ApartmentManagement.WebApi.Controllers
     [ApiController]
     public class ExpenseTypesController : ControllerBase
     {
-        private IExpeneTypeService _expeneTypeManager;
+        private IExpenseTypeService _expenseTypeManager;
 
-        public ExpenseTypesController(IExpeneTypeService expeneTypeManager)
+        public ExpenseTypesController(IExpenseTypeService expenseTypeManager)
         {
-            _expeneTypeManager = expeneTypeManager;
+            _expenseTypeManager = expenseTypeManager;
         }
 
 
         [HttpGet]
         public IActionResult GetAll()
         {
-            var result = _expeneTypeManager.GetAll();
+            var result = _expenseTypeManager.GetAll();
 
             if (!result.Success)
             {
@@ -39,7 +39,7 @@ namespace ApartmentManagement.WebApi.Controllers
         [HttpPost]
         public IActionResult Add([FromBody] ExpenseTypeAddDto newExpenseType)
         {
-            var result = _expeneTypeManager.Add(newExpenseType);
+            var result = _expenseTypeManager.Add(newExpenseType);
 
             if (!result.Success)
             {
@@ -52,7 +52,7 @@ namespace ApartmentManagement.WebApi.Controllers
         [HttpPut]
         public IActionResult Update([FromBody] ExpenseTypeUpdateDto updateExpenseType)
         {
-            var result = _expeneTypeManager.Update(updateExpenseType);
+            var result = _expenseTypeManager.Update(updateExpenseType);
 
             if (!result.Success)
             {
@@ -65,7 +65,7 @@ namespace ApartmentManagement.WebApi.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int deleteExpenseTypeId)
         {
-            var result = _expeneTypeManager.Delete(deleteExpenseTypeId);
+            var result = _expenseTypeManager.Delete(deleteExpenseTypeId);
 
             if (!result.Success)
             {

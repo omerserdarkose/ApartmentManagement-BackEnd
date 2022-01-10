@@ -12,5 +12,8 @@ namespace ApartmentManagement.Business.Abstract
     {
         IResult AddMessageForOne(UserMessageSendToOneDto messageSendToOneDto);
         IResult AddMessageForAll(UserMessageSendToAllDto messageSendToAllDto);
+
+        IDataResult<List<UserMessageIncomingViewDto>> GetUserIncomingMessages();
+        IDataResult<List<UserMessageSentViewDto>> GetUserSentMessages();
     }
 }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ApartmentManagement.Business.Abstract
 {
-    public interface IExpeneTypeService
+    public interface IExpenseTypeService
     {
         IDataResult<List<ExpenseTypeViewDto>> GetAll();
 

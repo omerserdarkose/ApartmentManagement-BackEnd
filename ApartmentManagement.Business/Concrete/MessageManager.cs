@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using ApartmentManagement.Business.Abstract;
@@ -12,6 +13,7 @@ using ApartmentManagement.Entities.Concrete;
 using ApartmentManagement.Entities.Dtos.Message;
 using ApartmentManagement.Entities.Dtos.UserMessage;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 
 namespace ApartmentManagement.Business.Concrete
 {
@@ -19,11 +21,16 @@ namespace ApartmentManagement.Business.Concrete
     {
         private IMessageDal _messageDal;
         private IMapper _mapper;
+        private IHttpContextAccessor _httpContextAccessor;
+        private int _currentUserId;
 
-        public MessageManager(IMessageDal messageDal, IMapper mapper)
+        public MessageManager(IMessageDal messageDal, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             _messageDal = messageDal;
             _mapper = mapper;
+            _httpContextAccessor = httpContextAccessor;
+            _currentUserId = Convert.ToInt32(_httpContextAccessor.HttpContext.User.Claims
+                .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value);
         }
         
         //[TransactionScopeAspect]
@@ -31,7 +38,7 @@ namespace ApartmentManagement.Business.Concrete
         {
             var newMessage = _mapper.Map<Message>(messageAddDto);
             
-            //newMessage.IuserId = ;
+            newMessage.IuserId = _currentUserId;
             newMessage.Idate=DateTime.Now;
 
             _messageDal.Add(newMessage);

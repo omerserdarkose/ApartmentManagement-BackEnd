@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using ApartmentManagement.Core.Utilities.Security;
 using ApartmentManagement.Core.Utilities.Security.Encryption;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
 
 namespace ApartmentManagement.WebApi
 {
@@ -34,6 +35,8 @@ namespace ApartmentManagement.WebApi
             services.AddControllers();
 
             services.AddAutoMapper(typeof(MappingProfile));
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddSwaggerGen(c =>
             {

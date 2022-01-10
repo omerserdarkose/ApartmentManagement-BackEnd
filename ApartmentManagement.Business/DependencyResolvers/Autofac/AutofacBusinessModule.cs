@@ -25,7 +25,7 @@ namespace ApartmentManagement.Business.DependencyResolvers.Autofac
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<ExpenseTypeManager>().As<IExpeneTypeService>();
+            builder.RegisterType<ExpenseTypeManager>().As<IExpenseTypeService>();
             builder.RegisterType<EfExpenseTypeDal>().As<IExpenseTypeDal>();
             
             builder.RegisterType<UserManager>().As<IUserService>();

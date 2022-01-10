@@ -63,5 +63,18 @@ namespace ApartmentManagement.WebApi.Controllers
 
             return Ok(result.Message);
         }
+
+        [HttpPost("{mail}")]
+        public IActionResult PasswordReset(int userId)
+        {
+            var passReset = _userManager.PasswordReset(userId);
+
+            if (!passReset.Success)
+            {
+                return BadRequest(passReset.Message);
+            }
+
+            return Ok(passReset.Message);
+        }
     }
 }

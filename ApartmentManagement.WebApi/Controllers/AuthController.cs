@@ -41,19 +41,5 @@ namespace ApartmentManagement.WebApi.Controllers
 
             return Ok(token);
         }
-
-        [HttpPost("{mail}")]
-        public IActionResult PasswordReset(string mail)
-        {
-            var passReset = _authManager.PasswordReset(mail);
-
-            if (!passReset.Success)
-            {
-                return BadRequest(passReset.Message);
-            }
-
-            return Ok(passReset.Message);
-        }
-
     }
 }
