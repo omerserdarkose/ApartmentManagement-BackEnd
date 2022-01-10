@@ -64,7 +64,28 @@ namespace ApartmentManagement.Business.Concrete
         //[TransactionScopeAspect]
         public IResult AddMessageForAll(UserMessageSendToAllDto messageSendToAllDto)
         {
+            //UI dan gelen nesnenin mesaj bilgileri(subject ve messagetext) yeni message nesnesine map ediliyor
             var newMessage = _mapper.Map<MessageAddDto>(messageSendToAllDto);
+
+            //message tablosuna yeni mesaj ekleniyor ve eklenen mesajin Id si aliniyor
+            var messageId = _messageManager.Add(newMessage);
+            //kullanici listesi getiriliyor
+            var userList = _userManager.GetAll();
+            //herbir kullanici icin mesaj entrysi olusturulup tabloya ekleniyor
+            foreach (var user in userList.Data.ToArray())
+            {
+                _userMessageDal.Add(new UserMessage()
+                {
+                    FromUserId = currentUserID,
+                    ToUserId = user.Id,
+                    MessageId = messageId,
+                    IuserId = currentUserID,
+                    Idate = DateTime.Now
+                });
+                //hangfire'a islem ekle herkese yeni mesajiniz var emaili atsin
+            }
+
+            return new SuccessResult(Messages.MessageSendAll);
         }
     }
 }

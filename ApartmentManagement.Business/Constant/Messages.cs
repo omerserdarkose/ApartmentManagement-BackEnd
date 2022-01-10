@@ -29,5 +29,6 @@ namespace ApartmentManagement.Business.Constant
         public static string RecipientNotFound="Alıcı Bulunamadı";
         public static string UserAddFailed = "Kullanıcı Ekleme İşlemi Başarısız!";
         public static string UserDetailAddFailed = "Kullanıcı Detay Ekleme İşlemi Başarısız!";
+        public static string MessageSendAll = "Tüm Kullanıcılara Mesaj Gönderildi";
     }
 }
