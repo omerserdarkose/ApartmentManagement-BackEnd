@@ -8,8 +8,10 @@ using System.Text;
 using System.Threading.Tasks;
 using ApartmentManagement.Core.Entities.Concrete;
 using ApartmentManagement.Core.Utilities.Result;
+using ApartmentManagement.Entities.Dtos.Message;
 using ApartmentManagement.Entities.Dtos.User;
 using ApartmentManagement.Entities.Dtos.UserDetail;
+using ApartmentManagement.Entities.Dtos.UserMessage;
 using Autofac.Features.Scanning;
 
 namespace ApartmentManagement.Business.Mapping.AutoMapper
@@ -40,9 +42,14 @@ namespace ApartmentManagement.Business.Mapping.AutoMapper
             CreateMap<UserViewDto, User>();
             CreateMap<UserUpdateDto, User>();
 
-
             CreateMap<UserDetailAddDto,UserDetail>();
             CreateMap<UserDetailUpdateDto, UserDetail>();
+            CreateMap<UserMessageSendToOneDto, MessageAddDto>();
+            CreateMap<UserMessageSendToAllDto, MessageAddDto>();
+            CreateMap<UserMessageSendToOneDto, UserMessage>()
+                .ForMember(dest=>dest.ToUserId,opt=>opt.MapFrom(src=>src.RecipientId));
+            CreateMap<UserMessageSendToAllDto, UserMessage>();
+
 
 
 

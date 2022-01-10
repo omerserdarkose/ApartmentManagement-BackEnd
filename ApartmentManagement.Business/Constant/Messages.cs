@@ -25,5 +25,7 @@ namespace ApartmentManagement.Business.Constant
         public static string UserDetailAdded="Kullanıcı Detayları Eklendi";
         public static string UserDetailRemoved = "Kullanıcı Detayları Kaldırıldı";
         public static string UserDetailUpdated= "Kullanıcı Detayları Güncelledi";
+        public static string MessageSend = "Mesaj Gönderildi";
+        public static string RecipientNotFound="Alıcı Bulunamadı";
     }
 }

@@ -10,7 +10,7 @@ namespace ApartmentManagement.Entities.Concrete
     {
         public int Id { get; set; }
         public string Subject { get; set; }
-        public string Message1 { get; set; }
+        public string MessageText { get; set; }
         public int IuserId { get; set; }
         public DateTime Idate { get; set; }
         public int? UuserId { get; set; }

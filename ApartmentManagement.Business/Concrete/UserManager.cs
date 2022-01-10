@@ -98,6 +98,18 @@ namespace ApartmentManagement.Business.Concrete
             return user;
         }
 
+        public bool UserExists(int userId)
+        {
+            var result = _userDal.Any(x => x.Id==userId);
+            return result;
+        }
+
+        public bool UserExists(string mail)
+        {
+            var result = _userDal.Any(x => x.Email == mail);
+            return result;
+        }
+
         public int GetUserId(string mail)
         {
             return _userDal.GetUserId(mail);
