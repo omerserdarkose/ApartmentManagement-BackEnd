@@ -4,13 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ApartmentManagement.Core.Utilities.Result;
+using ApartmentManagement.Entities.Concrete;
+using ApartmentManagement.Entities.Dtos.Message;
 
 namespace ApartmentManagement.Business.Abstract
 {
     public interface IMessageService
     {
-        IDataResult<MessageViewDto> GetById(int messageId);
+        int Add(MessageAddDto messageAddDto);
 
-
+        Message GetMessageByDate(DateTime messageDate);
     }
 }

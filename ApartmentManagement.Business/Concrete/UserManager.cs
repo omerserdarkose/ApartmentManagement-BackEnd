@@ -1,13 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ApartmentManagement.Business.Abstract;
 using ApartmentManagement.Business.Constant;
 using ApartmentManagement.Core.Aspects.Autofac;
 using ApartmentManagement.Core.Entities.Concrete;
 using ApartmentManagement.Core.Utilities.Result;
+using ApartmentManagement.Core.Utilities.Security.Hashing;
+using ApartmentManagement.Core.Utilities.Security.PasswordCreator;
 using ApartmentManagement.DataAccess.Abstract;
 using ApartmentManagement.Entities.Concrete;
 using ApartmentManagement.Entities.Dtos.User;
+using ApartmentManagement.Entities.Dtos.UserDetail;
 using AutoMapper;
 
 namespace ApartmentManagement.Business.Concrete
@@ -15,14 +19,14 @@ namespace ApartmentManagement.Business.Concrete
     public class UserManager : IUserService
     {
         private IUserDal _userDal;
-        //private IAuthService _authManager;
+        private IUserDetailService _userDetailManager;
         private IMapper _mapper;
 
-        public UserManager(IUserDal userDal, /*IAuthService authManager*/ IMapper mapper)
+        public UserManager(IUserDal userDal, IMapper mapper, IUserDetailService userDetailManager)
         {
             _userDal = userDal;
-            //_authManager = authManager;
             _mapper = mapper;
+            _userDetailManager = userDetailManager;
         }
 
         public IDataResult<List<UserViewDto>> GetAll()
@@ -34,28 +38,50 @@ namespace ApartmentManagement.Business.Concrete
 
         public IResult Add(User newUser)
         {
+            //newUser.IuserId = currentUserId;
+            //newUser.Idate = Datetime.Now;
             _userDal.Add(newUser);
             return new SuccessResult();
         }
 
         //[TransactionScopeAspect]
-        public IResult AddWithDetails(UserAddDto newUserWithDetails)
+        public IResult AddWithDetails(UserAddWithDetailsDto newUserWithDetails)
         {
-            /*var result = _authManager.UserNotExists(newUserWithDetails.Email);
+            var result = _userDal.Any(x => x.Email == newUserWithDetails.Email);
 
-            if (!result.Success)
+            if (result)
             {
                 return new ErrorResult(Messages.UserAlreadyExist);
             }
 
-            var userIdentityInfo=_authManager.Register(_mapper.Map<UserForRegisterDto>(newUserWithDetails));
+
+            var password = PasswordHelper.CreatePassword();
+
+            HashingHelper.CreatePasswordHash(password, out var passwordHash, out var passwordSalt);
+
+            var newUser = _mapper.Map<User>(newUserWithDetails);
+            newUser.PasswordSalt = passwordSalt;
+            newUser.PasswordHash = passwordHash;
+            var isUserAdd =Add(newUser);
+
+            if (!isUserAdd.Success)
+            {
+                return new ErrorResult(Messages.UserAddFailed);
+            }
+
+            //var userIdentityInfo=_authManager.Register(_mapper.Map<UserAddDto>(newUserWithDetails));
 
             var newUserId = GetUserId(newUserWithDetails.Email);
-            var userDetail = _mapper.Map<UserDetail>(newUserWithDetails);
+            var userDetail = _mapper.Map<UserDetailAddDto>(newUserWithDetails);
             userDetail.Id = newUserId;
-            _userDetailManager.Add(userDetail);
+            var isUserDetailAdd=_userDetailManager.Add(userDetail);
 
-            var apartment = _apartmentManager.GetById(newUserWithDetails.ApartmentId);
+            if (!isUserDetailAdd.Success)
+            {
+                return new ErrorResult(Messages.UserDetailAddFailed);
+            }
+
+            /*var apartment = _apartmentManager.GetById(newUserWithDetails.ApartmentId);
             apartment.IsHirer = newUserWithDetails.IsHirer;
             apartment.UserId = newUserId;
             _apartmentManager.Update(apartment);
@@ -85,8 +111,10 @@ namespace ApartmentManagement.Business.Concrete
 
         public IResult Update(UserUpdateDto userUpdateInfo)
         {
-            var updateUser = GetByMail(userUpdateInfo.Email);
+            var updateUser = GetById(userUpdateInfo.Id);
             updateUser = _mapper.Map(userUpdateInfo, updateUser);
+            //updateUser.UuserId = currentUserId;
+            //updateUser.Udate = Datetime.Now;
             _userDal.Update(updateUser);
 
             return new SuccessResult(Messages.UserUpdated);
@@ -95,6 +123,12 @@ namespace ApartmentManagement.Business.Concrete
         public User GetByMail(string mail)
         {
             var user = _userDal.Get(x => x.Email == mail);
+            return user;
+        }
+
+        public User GetById(int userId)
+        {
+            var user = _userDal.Get(x => x.Id==userId);
             return user;
         }
 
@@ -120,6 +154,26 @@ namespace ApartmentManagement.Business.Concrete
             var userClaims = _userDal.GetClaims(userId);
 
             return userClaims;
+        }
+
+        public IResult PasswordReset(int userId)
+        {
+            var userToCheck = GetById(userId);
+
+            if (userToCheck is null)
+            {
+                return new ErrorResult(Messages.UserNotFound);
+            }
+
+            var newPassword = PasswordHelper.CreatePassword();
+
+            HashingHelper.CreatePasswordHash(newPassword, out var passwordHash, out var passwordSalt);
+
+            userToCheck.PasswordSalt = passwordSalt;
+            userToCheck.PasswordHash = passwordHash;
+            Update(_mapper.Map<UserUpdateDto>(userToCheck));
+
+            return new SuccessResult(Messages.UserPasswordReset);
         }
 
     }

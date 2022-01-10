@@ -15,6 +15,11 @@ namespace ApartmentManagement.Business.Abstract
         IDataResult<List<UserViewDto>> GetAll();
 
         User GetByMail(string mail);
+        User GetById(int userId);
+
+        bool UserExists(int userId);
+
+        bool UserExists(string mail);
 
         int GetUserId(string mail);
 
@@ -22,10 +27,12 @@ namespace ApartmentManagement.Business.Abstract
 
         IResult Add(User newUser);
 
-        IResult AddWithDetails(UserAddDto newUserWithDetails);
+        IResult AddWithDetails(UserAddWithDetailsDto newUserWithDetails);
 
         IResult Delete(int userId);
 
         IResult Update(UserUpdateDto userUpdateInfo);
+
+        IResult PasswordReset(int userId);
     }
 }

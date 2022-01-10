@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using ApartmentManagement.Core.Entities;
 
-namespace ApartmentManagement.Entities.Dtos.Message
+namespace ApartmentManagement.Entities.Dtos.UserMessage
 {
-    public class MessageSendToAllDto:IDto
+    public class UserMessageSendToAllDto:IDto
     {
         public string Subject { get; set; }
         public string MessageText { get; set; }

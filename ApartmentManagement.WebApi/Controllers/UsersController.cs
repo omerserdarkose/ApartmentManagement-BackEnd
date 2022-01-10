@@ -27,7 +27,7 @@ namespace ApartmentManagement.WebApi.Controllers
 
 
         [HttpPost]
-        public IActionResult Add([FromBody] UserAddDto newUser)
+        public IActionResult Add([FromBody] UserAddWithDetailsDto newUser)
         {
             var result = _userManager.AddWithDetails(newUser);
             if (!result.Success)

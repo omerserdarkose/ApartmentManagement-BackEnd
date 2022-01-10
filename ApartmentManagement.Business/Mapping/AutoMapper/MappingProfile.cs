@@ -28,26 +28,26 @@ namespace ApartmentManagement.Business.Mapping.AutoMapper
             CreateMap<ExpenseTypeUpdateDto, ExpenseType>()
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name.Trim()));
 
-            CreateMap<UserAddDto, UserForRegisterDto>();
-            CreateMap<UserAddDto, UserDetail>()
+            CreateMap<UserAddWithDetailsDto, User>();
+            CreateMap<UserAddWithDetailsDto, UserDetailAddDto>()
                 .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.PhoneNumber))
                 .ForMember(dest => dest.IdentityNo, opt => opt.MapFrom(src => src.IdentityNo));
 
-            CreateMap<UserAddDto, Apartment>();
+            CreateMap<UserAddWithDetailsDto, Apartment>();
 
             CreateMap<UserClaimsViewDto, Claim>()
-                .ForMember(dest=>dest.Name,opt=>opt.MapFrom(src=>src.ClaimName));
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.ClaimName));
             CreateMap<User, UserUpdateDto>();
             CreateMap<User, UserViewDto>();
             CreateMap<UserViewDto, User>();
             CreateMap<UserUpdateDto, User>();
 
-            CreateMap<UserDetailAddDto,UserDetail>();
+            CreateMap<UserDetailAddDto, UserDetail>();
             CreateMap<UserDetailUpdateDto, UserDetail>();
             CreateMap<UserMessageSendToOneDto, MessageAddDto>();
             CreateMap<UserMessageSendToAllDto, MessageAddDto>();
             CreateMap<UserMessageSendToOneDto, UserMessage>()
-                .ForMember(dest=>dest.ToUserId,opt=>opt.MapFrom(src=>src.RecipientId));
+                .ForMember(dest => dest.ToUserId, opt => opt.MapFrom(src => src.RecipientId));
             CreateMap<UserMessageSendToAllDto, UserMessage>();
 
 

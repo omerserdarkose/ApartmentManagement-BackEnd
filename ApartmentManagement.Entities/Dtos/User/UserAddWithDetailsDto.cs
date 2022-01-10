@@ -2,7 +2,7 @@
 
 namespace ApartmentManagement.Entities.Dtos.User
 {
-    public class UserAddDto:IDto
+    public class UserAddWithDetailsDto:IDto
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

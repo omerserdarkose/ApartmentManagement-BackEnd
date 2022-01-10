@@ -12,14 +12,8 @@ namespace ApartmentManagement.Business.Abstract
 {
     public interface IAuthService
     {
-        IDataResult<UserIdentityDto> Register(UserForRegisterDto userForRegister);
-
         IDataResult<UserViewDto> Login(UserForLoginDto userForLogin);
 
         IDataResult<AccessToken> CreateAccessToken(User user);
-
-        IResult UserNotExists(string email);
-
-        IResult PasswordReset(string mail);
     }
 }
