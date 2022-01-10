@@ -15,7 +15,6 @@ using ApartmentManagement.Entities.Dtos.Message;
 using ApartmentManagement.Entities.Dtos.UserMessage;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 
 namespace ApartmentManagement.Business.Concrete
 {
@@ -103,13 +102,21 @@ namespace ApartmentManagement.Business.Concrete
             var incomingMessages = _userMessageDal.GetIncomingMessages(_currentUserId);
             if (incomingMessages is null)
             {
-                return new ErrorDataResult<List<UserMessageIncomingViewDto>>(Messages.User)
+                return new ErrorDataResult<List<UserMessageIncomingViewDto>>(Messages.UserMessageIncomingNotExist);
             }
+
+            return new SuccessDataResult<List<UserMessageIncomingViewDto>>();
         }
 
         public IDataResult<List<UserMessageSentViewDto>> GetUserSentMessages()
         {
-            throw new NotImplementedException();
+            var sentMessages = _userMessageDal.GetSentMessages(_currentUserId);
+            if (sentMessages is null)
+            {
+                return new ErrorDataResult<List<UserMessageSentViewDto>>(Messages.UserMessageSentNotExist);
+            }
+
+            return new SuccessDataResult<List<UserMessageSentViewDto>>();
         }
     }
 }

@@ -36,6 +36,7 @@ namespace ApartmentManagement.Business.DependencyResolvers.Autofac
 
             builder.RegisterType<EfUserDetailDal>().As<IUserDetailDal>();
             builder.RegisterType<UserDetailManager>().As<IUserDetailService>();
+            builder.RegisterType<BlockManager>().As<IBlockService>();
 
             //yurutulmekteolan tum assemblydeki implemente edilmis interfaceler icin interceptor ile mudahaleyi etkinlestiriyoruz> 
             builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly()).AsImplementedInterfaces()

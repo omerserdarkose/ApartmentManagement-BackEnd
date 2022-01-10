@@ -32,5 +32,10 @@ namespace ApartmentManagement.Business.Constant
         public static string MessageSendAll = "Tüm Kullanıcılara Mesaj Gönderildi";
         public static string UserMessageIncomingNotExist="Gelen Mesaj Kutunuz Boş";
         public static string UserMessageSentNotExist="Giden Mesaj Kutunuz Boş";
+        public static string BlockLetterAlreadyExist = "Bu Blok İsmi Zaten Mevcut";
+        public static string BlockAdded = "Yeni Blok İsmi Eklendi";
+        public static string BlockNotFound = "Blok İsmi Bulunamadı";
+        public static string BlockRemoved = "Blok İsmi Kaldırıldı";
+        public static string BlockUpdated = "Block İsmi Güncellendi";
     }
 }

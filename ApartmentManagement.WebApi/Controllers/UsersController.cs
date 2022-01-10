@@ -64,7 +64,7 @@ namespace ApartmentManagement.WebApi.Controllers
             return Ok(result.Message);
         }
 
-        [HttpPost("{mail}")]
+        [HttpPost("{id}")]
         public IActionResult PasswordReset(int userId)
         {
             var passReset = _userManager.PasswordReset(userId);

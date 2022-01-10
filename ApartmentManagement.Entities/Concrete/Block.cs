@@ -10,6 +10,7 @@ namespace ApartmentManagement.Entities.Concrete
     {
         public short Id { get; set; }
         public string Letter { get; set; }
+        public bool IsActive { get; set; }
         public int IuserId { get; set; }
         public DateTime Idate { get; set; }
         public int? UuserId { get; set; }
