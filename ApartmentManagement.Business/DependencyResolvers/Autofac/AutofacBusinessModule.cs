@@ -30,13 +30,26 @@ namespace ApartmentManagement.Business.DependencyResolvers.Autofac
             
             builder.RegisterType<UserManager>().As<IUserService>();
             builder.RegisterType<EfUserDal>().As<IUserDal>();
-            builder.RegisterType<AuthManager>().As<IAuthService>();
-
-            builder.RegisterType<JWTHelper>().As<ITokenHelper>();
 
             builder.RegisterType<EfUserDetailDal>().As<IUserDetailDal>();
             builder.RegisterType<UserDetailManager>().As<IUserDetailService>();
+
+            builder.RegisterType<EfBlockDal>().As<IBlockDal>();
             builder.RegisterType<BlockManager>().As<IBlockService>();
+
+            builder.RegisterType<EfApartmentDal>().As<IApartmentDal>();
+            builder.RegisterType<ApartmentManager>().As<IApartmentService>();
+
+            builder.RegisterType<EfMessageDal>().As<IMessageDal>();
+            builder.RegisterType<MessageManager>().As<IMessageService>();
+
+            builder.RegisterType<EfUserMessageDal>().As<IUserMessageDal>();
+            builder.RegisterType<UserMessageManager>().As<IUserMessageService>();
+
+
+            builder.RegisterType<AuthManager>().As<IAuthService>();
+
+            builder.RegisterType<JWTHelper>().As<ITokenHelper>();
 
             //yurutulmekteolan tum assemblydeki implemente edilmis interfaceler icin interceptor ile mudahaleyi etkinlestiriyoruz> 
             builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly()).AsImplementedInterfaces()

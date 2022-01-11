@@ -18,26 +18,43 @@ namespace ApartmentManagement.DataAccess.Concrete.EntityFramework
         {
             using (var context = new ApartmentManagementDbContext())
             {
-                var result = from contextUser in context.Users
-                             join apartment in context.Apartments
-                                 on contextUser.Id equals apartment.UserId
-                             join userDetail in context.UserDetails
-                                 on contextUser.Id equals userDetail.Id
-                             join block in context.Blocks
-                                 on apartment.BlockId equals block.Id
-                             where contextUser.IsActive == true
-                             select new UserViewDto()
-                             {
-                                 Id = contextUser.Id,
-                                 Name = contextUser.FirstName + " " + contextUser.LastName,
-                                 PhoneNumber = userDetail.PhoneNumber,
-                                 Email = contextUser.Email,
-                                 Block = block.Letter.ToUpper(),
-                                 DoorNumber = apartment.DoorNumber
-                             };
+                var result = (from user in context.Users
+                              join apartment in context.Apartments
+                                  on user.Id equals apartment.OwnerId
+                              join userDetail in context.UserDetails
+                                  on user.Id equals userDetail.Id
+                              join block in context.Blocks
+                                  on apartment.BlockId equals block.Id
+                              where user.IsActive == true
+                              select new UserViewDto()
+                              {
+                                  Id = user.Id,
+                                  Name = user.FirstName + " " + user.LastName,
+                                  PhoneNumber = userDetail.PhoneNumber,
+                                  Email = user.Email,
+                                  Block = block.Letter.ToUpper(),
+                                  DoorNumber = apartment.DoorNumber,
+                                  Title = "Owner"
+                              }).Union(from user in context.Users
+                                       join apartment in context.Apartments
+                                           on user.Id equals apartment.HirerId
+                                       join userDetail in context.UserDetails
+                                           on user.Id equals userDetail.Id
+                                       join block in context.Blocks
+                                           on apartment.BlockId equals block.Id
+                                       where user.IsActive == true
+                                       select new UserViewDto()
+                                       {
+                                           Id = user.Id,
+                                           Name = user.FirstName + " " + user.LastName,
+                                           PhoneNumber = userDetail.PhoneNumber,
+                                           Email = user.Email,
+                                           Block = block.Letter.ToUpper(),
+                                           DoorNumber = apartment.DoorNumber,
+                                           Title = "Hirer"
+                                       }).OrderBy(x => x.Block).ThenBy(x => x.DoorNumber);
                 return result.ToList();
             }
-
         }
 
         public List<UserClaimsViewDto> GetClaims(int userId)
@@ -61,7 +78,7 @@ namespace ApartmentManagement.DataAccess.Concrete.EntityFramework
         {
             using (var context = new ApartmentManagementDbContext())
             {
-                return context.Set<User>().SingleOrDefault(x=>x.Email==eMail).Id;
+                return context.Set<User>().SingleOrDefault(x => x.Email == eMail).Id;
             }
         }
     }

@@ -12,5 +12,6 @@ namespace ApartmentManagement.Entities.Dtos.User
         public string[] LicensePlate { get; set; }
         public int ApartmentId { get; set; }
         public bool IsHirer { get; set; }
+        public bool IsResident { get; set; }
     }
 }

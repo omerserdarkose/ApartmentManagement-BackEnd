@@ -55,7 +55,17 @@ namespace ApartmentManagement.Business.Concrete
 
         public IResult Update(BlockUpdateDto updateBlockDto)
         {
-            throw new NotImplementedException();
+            var updateBlock = _blockDal.Get(x => x.Id == updateBlockDto.Id);
+            if (updateBlock is null)
+            {
+                return new ErrorResult(Messages.BlockNotFound);
+            }
+
+            updateBlock = _mapper.Map(updateBlockDto, updateBlock);
+            updateBlock.UuserId = _currentUserId;
+            updateBlock.Udate = DateTime.Now;
+            _blockDal.Update(updateBlock);
+            return new SuccessResult(Messages.BlockUpdated);
         }
 
         public IResult Delete(int blockId)
@@ -67,10 +77,10 @@ namespace ApartmentManagement.Business.Concrete
             }
 
             deleteBlock.IsActive = false;
-            newBlock.IuserId = _currentUserId;
-            newBlock.Idate = DateTime.Now;
-            _blockDal.Add(newBlock);
-            return new SuccessResult(Messages.BlockAdded);
+            deleteBlock.UuserId = _currentUserId;
+            deleteBlock.Udate = DateTime.Now;
+            _blockDal.Update(deleteBlock);
+            return new SuccessResult(Messages.BlockRemoved);
         }
     }
 }

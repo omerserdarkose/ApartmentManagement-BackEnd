@@ -105,7 +105,7 @@ namespace ApartmentManagement.Business.Concrete
                 return new ErrorDataResult<List<UserMessageIncomingViewDto>>(Messages.UserMessageIncomingNotExist);
             }
 
-            return new SuccessDataResult<List<UserMessageIncomingViewDto>>();
+            return new SuccessDataResult<List<UserMessageIncomingViewDto>>(incomingMessages);
         }
 
         public IDataResult<List<UserMessageSentViewDto>> GetUserSentMessages()
@@ -116,7 +116,7 @@ namespace ApartmentManagement.Business.Concrete
                 return new ErrorDataResult<List<UserMessageSentViewDto>>(Messages.UserMessageSentNotExist);
             }
 
-            return new SuccessDataResult<List<UserMessageSentViewDto>>();
+            return new SuccessDataResult<List<UserMessageSentViewDto>>(sentMessages);
         }
     }
 }

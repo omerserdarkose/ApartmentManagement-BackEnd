@@ -11,7 +11,7 @@ namespace ApartmentManagement.Business.Abstract
     public interface IBlockService
     {
         IDataResult<List<BlockViewDto>> GetAll();
-        IResult Add(BlockAddDto newBlock);
+        IResult Add(BlockAddDto blockAddDto);
         IResult Update(BlockUpdateDto updateBlockDto);
         IResult Delete(int blockId);
 

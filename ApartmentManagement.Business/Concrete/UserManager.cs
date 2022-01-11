@@ -11,6 +11,7 @@ using ApartmentManagement.Core.Utilities.Security.Hashing;
 using ApartmentManagement.Core.Utilities.Security.PasswordCreator;
 using ApartmentManagement.DataAccess.Abstract;
 using ApartmentManagement.Entities.Concrete;
+using ApartmentManagement.Entities.Dtos.Apartment;
 using ApartmentManagement.Entities.Dtos.User;
 using ApartmentManagement.Entities.Dtos.UserDetail;
 using AutoMapper;
@@ -22,16 +23,18 @@ namespace ApartmentManagement.Business.Concrete
     {
         private IUserDal _userDal;
         private IUserDetailService _userDetailManager;
+        private IApartmentService _apartmentManager;
         private IMapper _mapper;
         private IHttpContextAccessor _httpContextAccessor;
         private int _currentUserId;
 
-        public UserManager(IUserDal userDal, IMapper mapper, IUserDetailService userDetailManager, IHttpContextAccessor httpContextAccessor)
+        public UserManager(IUserDal userDal, IMapper mapper, IUserDetailService userDetailManager, IHttpContextAccessor httpContextAccessor, IApartmentService apartmentManager)
         {
             _userDal = userDal;
             _mapper = mapper;
             _userDetailManager = userDetailManager;
             _httpContextAccessor = httpContextAccessor;
+            _apartmentManager = apartmentManager;
             _currentUserId = Convert.ToInt32(_httpContextAccessor.HttpContext.User.Claims
                 .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value);
         }
@@ -54,45 +57,68 @@ namespace ApartmentManagement.Business.Concrete
         //[TransactionScopeAspect]
         public IResult AddWithDetails(UserAddWithDetailsDto newUserWithDetails)
         {
+            //eklenecek kullanicini maili check ediliyor
             var result = _userDal.Any(x => x.Email == newUserWithDetails.Email);
 
+            //mail varsa
             if (result)
             {
+                //hata mesaji veriliyor
                 return new ErrorResult(Messages.UserAlreadyExist);
             }
 
+            //yeni kullanici icin parola olusturuluyor
             var password = PasswordHelper.CreatePassword();
 
+            //bu parolaya ait hash ve salt degerleri olusturuluyor
             HashingHelper.CreatePasswordHash(password, out var passwordHash, out var passwordSalt);
 
+            //yeni bir kullanici instance olusturuluyor ve alinan biligilerden User tablosu ile ilgili olanlar map ediliyor
             var newUser = _mapper.Map<User>(newUserWithDetails);
+
+            //User tablosunda tutulacak olan icin psswordHash ve passwordSalt degerleri nesneye yaziliyor
             newUser.PasswordSalt = passwordSalt;
             newUser.PasswordHash = passwordHash;
-            var isUserAdd =Add(newUser);
 
+            //yeni kullanici user tablosuna ekleniyor
+            var isUserAdd = Add(newUser);
+
+            //ekleme isleminde problem olursa hata bildiriliyor
             if (!isUserAdd.Success)
             {
                 return new ErrorResult(Messages.UserAddFailed);
             }
 
-            //var userIdentityInfo=_authManager.Register(_mapper.Map<UserAddDto>(newUserWithDetails));
-
+            //iliskili tablolarda userId gerekli oldugu icin yeni kullanicinin id bilgisi aliniyor
             var newUserId = GetUserId(newUserWithDetails.Email);
-            var userDetail = _mapper.Map<UserDetailAddDto>(newUserWithDetails);
-            userDetail.Id = newUserId;
-            var isUserDetailAdd=_userDetailManager.Add(userDetail);
 
+            //linan bilgilerden userDetail tablosu ile ilgili olanlar olusturulan UserDetailAdd instance na map ediliyor
+            var userDetail = _mapper.Map<UserDetailAddDto>(newUserWithDetails);
+
+            //userDetail icin gerekli olan baglantili tablo Id (UserId) bilgisi yaziliyor
+            userDetail.Id = newUserId;
+
+            //userDetail tablosuna yeni kayit ekleniyor
+            var isUserDetailAdd = _userDetailManager.Add(userDetail);
+
+            //ekleme isleminde problem olursa hata bildiriliyor
             if (!isUserDetailAdd.Success)
             {
                 return new ErrorResult(Messages.UserDetailAddFailed);
             }
 
-            /*var apartment = _apartmentManager.GetById(newUserWithDetails.ApartmentId);
-            apartment.IsHirer = newUserWithDetails.IsHirer;
-            apartment.UserId = newUserId;
-            _apartmentManager.Update(apartment);
 
-            foreach (string licensePlate in newUserWithDetails.LicensePlate.ToArray())
+            //apartment tablosunun update icin bilgileri alinarak yeni bir update instance olusturuluyor
+            var updateApartmentUser = _mapper.Map<ApartmentUserUpdateDto>(newUserWithDetails);
+
+            //kullanici idsi ekleniyor
+            updateApartmentUser.UserId = newUserId;
+
+            //apartment tablosundaki kullanici bilgileri degistiriliyor
+            _apartmentManager.UpdateUser(updateApartmentUser);
+            
+
+            /*foreach (string licensePlate in newUserWithDetails.LicensePlate.ToArray())
             {
                 _carManager.Add(new Car() {LicensePlate = licensePlate, UserId = newUserId});
             }*/
@@ -111,7 +137,7 @@ namespace ApartmentManagement.Business.Concrete
 
             user.IsActive = false;
             user.UuserId = _currentUserId;
-            user.Udate=DateTime.Now;
+            user.Udate = DateTime.Now;
             _userDal.Update(user);
 
             return new SuccessResult(Messages.UserRemoved);
@@ -136,13 +162,13 @@ namespace ApartmentManagement.Business.Concrete
 
         public User GetById(int userId)
         {
-            var user = _userDal.Get(x => x.Id==userId);
+            var user = _userDal.Get(x => x.Id == userId);
             return user;
         }
 
         public bool UserExists(int userId)
         {
-            var result = _userDal.Any(x => x.Id==userId);
+            var result = _userDal.Any(x => x.Id == userId);
             return result;
         }
 

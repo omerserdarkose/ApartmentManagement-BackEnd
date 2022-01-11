@@ -1,4 +1,6 @@
-﻿using ApartmentManagement.Core.Entities;
+﻿using System.Reflection;
+using ApartmentManagement.Core.Entities;
+using Microsoft.AspNetCore.Diagnostics;
 
 namespace ApartmentManagement.Entities.Dtos.User
 {
@@ -10,5 +12,6 @@ namespace ApartmentManagement.Entities.Dtos.User
         public string Email { get; set; }
         public string Block { get; set; }
         public short DoorNumber { get; set; }
-    }
+        public string Title { get; set; }
+}
 }

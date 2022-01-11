@@ -37,5 +37,16 @@ namespace ApartmentManagement.Business.Constant
         public static string BlockNotFound = "Blok İsmi Bulunamadı";
         public static string BlockRemoved = "Blok İsmi Kaldırıldı";
         public static string BlockUpdated = "Block İsmi Güncellendi";
+        public static string ApartmentAlreadyExist = "Bu Blok ve Numaraya Kayitli Bir Konut Zaten Mevcut";
+        public static string ApartmentAdded = "Yeni Konut Bilgisi Eklendi";
+        public static string ApartmentNotFound = "Konut Bilgisi Mevcut Değil!";
+        public static string ApartmentUpdated = "Konut Bilgisi Güncellendi";
+        public static string ApartmentDeleted = "Konunt Bilgisi Kaldırıldı";
+        public static string ApartmentUserAlreadyExist="Konut-Kullanıcı Kaydi Zaten Mevcut Lütfen Güncelleme İşlemini Deneyiniz";
+        public static string ApartmentUserAdded = "Konut-Kullanıcı Bilgisi Eklendi";
+        public static string ApartmentUserOwnerNotFound="Konut-Kullanıcı Bilgisi Bulunamadı, Lütfen Önce Konut Sahibinin Bilgilerini Giriniz";
+        public static string ApartmentUserUpdated = "Konut-Kullanıcı Bilgisi Güncellendi";
+        public static string ApartmentUserRemoved = "Konut-Kullanıcı Bilgisi Kaldırıldı";
+        public static string ApartmentUserNotFound="Konut-Kullanıcı Bilgisi Bulunamadı";
     }
 }
