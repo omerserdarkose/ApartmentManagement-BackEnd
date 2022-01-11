@@ -33,7 +33,8 @@ namespace ApartmentManagement.Business.Concrete
 
         public IDataResult<List<ApartmentViewDto>> GetAll()
         {
-            throw new NotImplementedException();
+            var result = _apartmentDal.GetListWithDetails();
+            return new SuccessDataResult<List<ApartmentViewDto>>(result);
 
         }
 
@@ -115,6 +116,8 @@ namespace ApartmentManagement.Business.Concrete
             return new SuccessResult(Messages.ApartmentUpdated);
         }
 
+
+        //ISLEVSELLIGINI KONTROL ET, REVIZYON SONRASI ISE YARAYABILIR DIYE BIRAKTIN
         public IResult UpdateStatus(int apartmentId, bool status)
         {
             var apartment = _apartmentDal.Get(x => x.Id == apartmentId);
@@ -149,10 +152,5 @@ namespace ApartmentManagement.Business.Concrete
             return new SuccessResult(Messages.ApartmentUpdated);
         }
 
-        public IDataResult<List<ApartmentViewDto>> elma()
-        {
-            var result = _apartmentDal.GetListWithDetails();
-            return new SuccessDataResult<List<ApartmentViewDto>>(result);
-        }
     }
 }

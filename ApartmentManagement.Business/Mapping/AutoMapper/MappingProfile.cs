@@ -10,6 +10,7 @@ using ApartmentManagement.Core.Entities.Concrete;
 using ApartmentManagement.Core.Utilities.Result;
 using ApartmentManagement.Entities.Dtos.Apartment;
 using ApartmentManagement.Entities.Dtos.Block;
+using ApartmentManagement.Entities.Dtos.Car;
 using ApartmentManagement.Entities.Dtos.Message;
 using ApartmentManagement.Entities.Dtos.User;
 using ApartmentManagement.Entities.Dtos.UserDetail;
@@ -54,6 +55,8 @@ namespace ApartmentManagement.Business.Mapping.AutoMapper
             CreateMap<Block, BlockViewDto>();
             CreateMap<BlockAddDto, Block>();
             CreateMap<ApartmentAddDto, Apartment>();
+            CreateMap<CarAddDto, Car>();
+            CreateMap<UserAddWithDetailsDto, ApartmentUserUpdateDto>();
 
 
 

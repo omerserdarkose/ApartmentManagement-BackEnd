@@ -15,7 +15,6 @@ namespace ApartmentManagement.Business.Abstract
         IResult UpdateUser(ApartmentUserUpdateDto apartmentUpdateDto);
         IResult UpdateStatus(int apartmentId,bool status);
         IResult Delete(int apartmentId);
-
-        IDataResult<List<ApartmentViewDto>> elma();
+        IDataResult<List<ApartmentViewDto>> GetAll();
     }
 }

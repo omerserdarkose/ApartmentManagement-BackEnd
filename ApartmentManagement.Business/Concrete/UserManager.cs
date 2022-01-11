@@ -12,6 +12,7 @@ using ApartmentManagement.Core.Utilities.Security.PasswordCreator;
 using ApartmentManagement.DataAccess.Abstract;
 using ApartmentManagement.Entities.Concrete;
 using ApartmentManagement.Entities.Dtos.Apartment;
+using ApartmentManagement.Entities.Dtos.Car;
 using ApartmentManagement.Entities.Dtos.User;
 using ApartmentManagement.Entities.Dtos.UserDetail;
 using AutoMapper;
@@ -24,17 +25,20 @@ namespace ApartmentManagement.Business.Concrete
         private IUserDal _userDal;
         private IUserDetailService _userDetailManager;
         private IApartmentService _apartmentManager;
+        private ICarService _carManager;
+
         private IMapper _mapper;
         private IHttpContextAccessor _httpContextAccessor;
         private int _currentUserId;
 
-        public UserManager(IUserDal userDal, IMapper mapper, IUserDetailService userDetailManager, IHttpContextAccessor httpContextAccessor, IApartmentService apartmentManager)
+        public UserManager(IUserDal userDal, IMapper mapper, IUserDetailService userDetailManager, IHttpContextAccessor httpContextAccessor, IApartmentService apartmentManager, ICarService carManager)
         {
             _userDal = userDal;
             _mapper = mapper;
             _userDetailManager = userDetailManager;
             _httpContextAccessor = httpContextAccessor;
             _apartmentManager = apartmentManager;
+            _carManager = carManager;
             _currentUserId = Convert.ToInt32(_httpContextAccessor.HttpContext.User.Claims
                 .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value);
         }
@@ -54,7 +58,7 @@ namespace ApartmentManagement.Business.Concrete
             return new SuccessResult();
         }
 
-        //[TransactionScopeAspect]
+        [TransactionScopeAspect]
         public IResult AddWithDetails(UserAddWithDetailsDto newUserWithDetails)
         {
             //eklenecek kullanicini maili check ediliyor
@@ -66,7 +70,7 @@ namespace ApartmentManagement.Business.Concrete
                 //hata mesaji veriliyor
                 return new ErrorResult(Messages.UserAlreadyExist);
             }
-
+            //JEAT&q6988
             //yeni kullanici icin parola olusturuluyor
             var password = PasswordHelper.CreatePassword();
 
@@ -118,10 +122,10 @@ namespace ApartmentManagement.Business.Concrete
             _apartmentManager.UpdateUser(updateApartmentUser);
             
 
-            /*foreach (string licensePlate in newUserWithDetails.LicensePlate.ToArray())
+            foreach (string licensePlate in newUserWithDetails.LicensePlate.ToArray())
             {
-                _carManager.Add(new Car() {LicensePlate = licensePlate, UserId = newUserId});
-            }*/
+                _carManager.Add(new CarAddDto() {LicensePlate = licensePlate, UserId = newUserId});
+            }
 
             return new SuccessResult(Messages.UserAddedWithInfos);
         }

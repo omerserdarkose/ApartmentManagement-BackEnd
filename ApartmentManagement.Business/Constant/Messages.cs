@@ -48,5 +48,12 @@ namespace ApartmentManagement.Business.Constant
         public static string ApartmentUserUpdated = "Konut-Kullanıcı Bilgisi Güncellendi";
         public static string ApartmentUserRemoved = "Konut-Kullanıcı Bilgisi Kaldırıldı";
         public static string ApartmentUserNotFound="Konut-Kullanıcı Bilgisi Bulunamadı";
+        public static string UserCarNotFound = "Kullanıcıya Aıt Araç Bulunamadı";
+        public static string CarListNoxExist = "Araç Listesi Bulunmamakta";
+        public static string CarAlreadyExist = "Bu Plakaya Kayıtlı Araç Bilgisi Zaten Mevcut";
+        public static string CarAdded = "Araç Bilgisi Eklendi";
+        public static string CarNotFound = "Belirtilen Plakada Araç Kaydı Bulunmamakta";
+        public static string CarUpdated = "Araç Bilgisi Güncellendi";
+        public static string CarRemoved = "Araç Bilgisi Kaldırıldı";
     }
 }

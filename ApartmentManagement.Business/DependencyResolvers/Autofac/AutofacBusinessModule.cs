@@ -45,6 +45,9 @@ namespace ApartmentManagement.Business.DependencyResolvers.Autofac
 
             builder.RegisterType<EfUserMessageDal>().As<IUserMessageDal>();
             builder.RegisterType<UserMessageManager>().As<IUserMessageService>();
+            
+            builder.RegisterType<EfCarDal>().As<ICarDal>();
+            builder.RegisterType<CarManager>().As<ICarService>();
 
 
             builder.RegisterType<AuthManager>().As<IAuthService>();

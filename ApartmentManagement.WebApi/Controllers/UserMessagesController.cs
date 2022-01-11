@@ -21,13 +21,13 @@ namespace ApartmentManagement.WebApi.Controllers
         }
 
         // GET: api/<UserMessagesController>
-        [HttpGet]
+        [HttpGet("inbox")]
         public IActionResult GetIncomingMessages()
         {
             return Ok(_userMessageManager.GetUserIncomingMessages());
         }
 
-        [HttpGet("sent-messages")]
+        [HttpGet("sent")]
         public IActionResult GetSentMessages()
         {
             return Ok(_userMessageManager.GetUserSentMessages());

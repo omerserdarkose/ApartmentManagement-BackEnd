@@ -23,7 +23,7 @@ namespace ApartmentManagement.WebApi.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_apartmentManager.elma());
+            return Ok(_apartmentManager.GetAll());
         }
 
         // GET api/<ApartmetsController>/5
