@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace ApartmentManagement.Core.Entities.Concrete
 {
-    public partial class UserClaim : IEntity
+    public class UserClaim : IEntity
     {
         public int Id { get; set; }
         public int UserId { get; set; }

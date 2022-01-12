@@ -61,14 +61,14 @@ namespace ApartmentManagement.DataAccess.Concrete.EntityFramework
         {
             using (var context = new ApartmentManagementDbContext())
             {
-                var result = from uc in context.UserClaims
-                             join c in context.Claims
-                                 on uc.ClaimId equals c.Id
-                             where uc.Id == userId && c.IsActive == true
+                var result = from userClaim in context.UserClaims
+                             join claim in context.Claims
+                                 on userClaim.ClaimId equals claim.Id
+                             where userClaim.Id == userId && claim.IsActive == true
                              select new UserClaimsViewDto()
                              {
-                                 Id = c.Id,
-                                 ClaimName = c.Name
+                                 Id = claim.Id,
+                                 ClaimName = claim.Name
                              };
                 return result.ToList();
             }

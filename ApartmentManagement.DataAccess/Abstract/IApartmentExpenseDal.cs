@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ApartmentManagement.DataAccess.Abstract
 {
-    public interface IUserExpenseDal : IEntityRepository<UserExpense>
+    public interface IApartmentExpenseDal : IEntityRepository<ApartmentExpense>
     {
     }
 }

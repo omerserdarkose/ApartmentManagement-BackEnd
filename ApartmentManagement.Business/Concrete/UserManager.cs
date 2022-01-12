@@ -14,6 +14,7 @@ using ApartmentManagement.Entities.Concrete;
 using ApartmentManagement.Entities.Dtos.Apartment;
 using ApartmentManagement.Entities.Dtos.Car;
 using ApartmentManagement.Entities.Dtos.User;
+using ApartmentManagement.Entities.Dtos.UserClaim;
 using ApartmentManagement.Entities.Dtos.UserDetail;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
@@ -26,12 +27,13 @@ namespace ApartmentManagement.Business.Concrete
         private IUserDetailService _userDetailManager;
         private IApartmentService _apartmentManager;
         private ICarService _carManager;
+        private IUserClaimService _userClaimManager;
 
         private IMapper _mapper;
         private IHttpContextAccessor _httpContextAccessor;
         private int _currentUserId;
 
-        public UserManager(IUserDal userDal, IMapper mapper, IUserDetailService userDetailManager, IHttpContextAccessor httpContextAccessor, IApartmentService apartmentManager, ICarService carManager)
+        public UserManager(IUserDal userDal, IMapper mapper, IUserDetailService userDetailManager, IHttpContextAccessor httpContextAccessor, IApartmentService apartmentManager, ICarService carManager, IUserClaimService userClaimManager)
         {
             _userDal = userDal;
             _mapper = mapper;
@@ -39,6 +41,7 @@ namespace ApartmentManagement.Business.Concrete
             _httpContextAccessor = httpContextAccessor;
             _apartmentManager = apartmentManager;
             _carManager = carManager;
+            _userClaimManager = userClaimManager;
             _currentUserId = Convert.ToInt32(_httpContextAccessor.HttpContext.User.Claims
                 .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value);
         }
@@ -70,7 +73,7 @@ namespace ApartmentManagement.Business.Concrete
                 //hata mesaji veriliyor
                 return new ErrorResult(Messages.UserAlreadyExist);
             }
-            //JEAT&q6988
+            //zXZqda4z%2
             //yeni kullanici icin parola olusturuluyor
             var password = PasswordHelper.CreatePassword();
 
@@ -120,12 +123,17 @@ namespace ApartmentManagement.Business.Concrete
 
             //apartment tablosundaki kullanici bilgileri degistiriliyor
             _apartmentManager.UpdateUser(updateApartmentUser);
-            
+
+            //yeni eklenen kullanici icin default yetki atamasi yapiliyor
+            _userClaimManager.AddDefault(newUserId);
+
 
             foreach (string licensePlate in newUserWithDetails.LicensePlate.ToArray())
             {
                 _carManager.Add(new CarAddDto() {LicensePlate = licensePlate, UserId = newUserId});
             }
+
+
 
             return new SuccessResult(Messages.UserAddedWithInfos);
         }

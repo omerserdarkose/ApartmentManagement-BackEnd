@@ -22,8 +22,6 @@ namespace ApartmentManagement.Business.Concrete
         private IHttpContextAccessor _httpContextAccessor;
         private int _currentUserId;
         
-
-
         public CarManager(ICarDal carDal, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             _carDal = carDal;

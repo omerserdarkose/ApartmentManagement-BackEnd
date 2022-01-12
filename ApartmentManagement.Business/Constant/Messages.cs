@@ -55,5 +55,17 @@ namespace ApartmentManagement.Business.Constant
         public static string CarNotFound = "Belirtilen Plakada Araç Kaydı Bulunmamakta";
         public static string CarUpdated = "Araç Bilgisi Güncellendi";
         public static string CarRemoved = "Araç Bilgisi Kaldırıldı";
+        public static string ClaimNotFound="Yetki Kategorisi Bulunamadı";
+        public static string ClaimRemoved = "Yetki Kategorisi Kaldırıldı";
+        public static string ClaimUpdated="Yetki Kategorisi Güncellendi";
+        public static string ClaimListNoxExist="Kayıtlı Yetki Kategorisi Bulunmamakta";
+        public static string ClaimAlreadyExist = "Bu İsimde Bir Yetki Kategorisi Zaten Mevcut";
+        public static string ClaimAdded = "Yetki Kategorisi Eklendi";
+        public static string UserClaimListNoxExist="Kullanıcı Yetki Listesi Mevcut Değil";
+        public static string UserClaimAlreadyExist="Kullanıcı Zaten Bu Yetkiye Sahip";
+        public static string UserClaimAdded="Kullanıcı Yetki Atamsı Yapıldı";
+        public static string UserClaimNotFound="Kullanıcı Yetkisi Bulunamadı";
+        public static string UserClaimUpdated = "Kullanıcı Yetkisi Güncellendi";
+        public static string UserClaimCanNotBeRemoved="Bu Yetki Kaldırılamaz. Her Kullanıcının En Az Bir Yetkisi Olmak Zorundadır. Yetkiyi Değiştirebilir yada Kullanıcıyı Silebilirsiniz";
     }
 }

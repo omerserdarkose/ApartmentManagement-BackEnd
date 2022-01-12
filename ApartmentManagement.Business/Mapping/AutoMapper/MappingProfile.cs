@@ -11,8 +11,10 @@ using ApartmentManagement.Core.Utilities.Result;
 using ApartmentManagement.Entities.Dtos.Apartment;
 using ApartmentManagement.Entities.Dtos.Block;
 using ApartmentManagement.Entities.Dtos.Car;
+using ApartmentManagement.Entities.Dtos.Claim;
 using ApartmentManagement.Entities.Dtos.Message;
 using ApartmentManagement.Entities.Dtos.User;
+using ApartmentManagement.Entities.Dtos.UserClaim;
 using ApartmentManagement.Entities.Dtos.UserDetail;
 using ApartmentManagement.Entities.Dtos.UserMessage;
 using Autofac.Features.Scanning;
@@ -57,6 +59,8 @@ namespace ApartmentManagement.Business.Mapping.AutoMapper
             CreateMap<ApartmentAddDto, Apartment>();
             CreateMap<CarAddDto, Car>();
             CreateMap<UserAddWithDetailsDto, ApartmentUserUpdateDto>();
+            CreateMap<UserClaimUpdateDto, UserClaim>();
+            CreateMap<ClaimAddDto, Claim>();
 
 
 

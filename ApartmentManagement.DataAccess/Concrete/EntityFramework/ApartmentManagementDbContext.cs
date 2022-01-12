@@ -30,7 +30,7 @@ namespace ApartmentManagement.DataAccess.Concrete.EntityFramework
         public DbSet<User> Users { get; set; }
         public DbSet<UserClaim> UserClaims { get; set; }
         public DbSet<UserDetail> UserDetails { get; set; }
-        public DbSet<UserExpense> UserExpenses { get; set; }
+        public DbSet<ApartmentExpense> ApartmentExpenses { get; set; }
         public DbSet<UserMessage> UserMessages { get; set; }
 
     }
