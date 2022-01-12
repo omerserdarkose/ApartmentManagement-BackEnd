@@ -38,6 +38,25 @@ namespace ApartmentManagement.Business.Concrete
 
         }
 
+        public List<int> GetIdList()
+        {
+            var idList = _apartmentDal.GetIdList();
+            return idList;
+        }
+
+        public int GetIdByResidentId(int residentId)
+        {
+            var isHirer = IsHirer(residentId);
+            
+            return isHirer? _apartmentDal.Get(x => x.HirerId == residentId).Id: _apartmentDal.Get(x => x.OwnerId == residentId).Id; 
+        }
+
+        public bool IsHirer(int residentId)
+        {
+            var isHirer = _apartmentDal.Any(x => x.HirerId == residentId);
+            return isHirer;
+        }
+
         public IResult Add(ApartmentAddDto apartmentAddDto)
         {
             var apartmentCheck = _apartmentDal.Any(x =>

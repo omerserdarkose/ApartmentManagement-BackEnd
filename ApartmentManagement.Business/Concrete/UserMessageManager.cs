@@ -38,11 +38,11 @@ namespace ApartmentManagement.Business.Concrete
                 .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value);
         }
 
-        //[TransactionScopeAspect]
+        [TransactionScopeAspect]
         public IResult AddMessageForOne(UserMessageSendToOneDto messageSendToOneDto)
         {
             //alici olup olmadigi check ediliyor
-            if (!_userManager.UserExists(messageSendToOneDto.RecipientId))
+            if (!_userManager.UserExistsId(userId:messageSendToOneDto.RecipientId))
             {
                 //yoksa aldici bulunamadi sonucu donuluyor
                 return new ErrorResult(Messages.RecipientNotFound);
@@ -70,7 +70,7 @@ namespace ApartmentManagement.Business.Concrete
         }
 
         //[SecuredOperation(Roles:("admin"))]
-        //[TransactionScopeAspect]
+        [TransactionScopeAspect]
         public IResult AddMessageForAll(UserMessageSendToAllDto messageSendToAllDto)
         {
             //UI dan gelen nesnenin mesaj bilgileri(subject ve messagetext) yeni message nesnesine map ediliyor
@@ -89,6 +89,10 @@ namespace ApartmentManagement.Business.Concrete
                     ToUserId = user.Id,
                     MessageId = messageId,
                     IuserId = _currentUserId,
+                    IsNew = true,
+                    IsRead = false,
+                    IsActiveFuser = true,
+                    IsActiveToUser = true,
                     Idate = DateTime.Now
                 });
                 //hangfire'a islem ekle herkese yeni mesajiniz var emaili atsin

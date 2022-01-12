@@ -9,9 +9,11 @@ using System.Threading.Tasks;
 using ApartmentManagement.Core.Entities.Concrete;
 using ApartmentManagement.Core.Utilities.Result;
 using ApartmentManagement.Entities.Dtos.Apartment;
+using ApartmentManagement.Entities.Dtos.ApartmentExpense;
 using ApartmentManagement.Entities.Dtos.Block;
 using ApartmentManagement.Entities.Dtos.Car;
 using ApartmentManagement.Entities.Dtos.Claim;
+using ApartmentManagement.Entities.Dtos.Expense;
 using ApartmentManagement.Entities.Dtos.Message;
 using ApartmentManagement.Entities.Dtos.User;
 using ApartmentManagement.Entities.Dtos.UserClaim;
@@ -54,6 +56,8 @@ namespace ApartmentManagement.Business.Mapping.AutoMapper
             CreateMap<UserMessageSendToOneDto, UserMessage>()
                 .ForMember(dest => dest.ToUserId, opt => opt.MapFrom(src => src.RecipientId));
             CreateMap<UserMessageSendToAllDto, UserMessage>();
+            CreateMap<MessageAddDto, Message>();
+
             CreateMap<Block, BlockViewDto>();
             CreateMap<BlockAddDto, Block>();
             CreateMap<ApartmentAddDto, Apartment>();
@@ -61,6 +65,10 @@ namespace ApartmentManagement.Business.Mapping.AutoMapper
             CreateMap<UserAddWithDetailsDto, ApartmentUserUpdateDto>();
             CreateMap<UserClaimUpdateDto, UserClaim>();
             CreateMap<ClaimAddDto, Claim>();
+            CreateMap<ExpenseAddDto, Expense>();
+            CreateMap<ExpenseUpdateDto, Expense>();
+            CreateMap<ExpenseAddForOneDto, ExpenseAddDto>();
+            CreateMap<ApartmentExpenseAddDto, ApartmentExpense>();
 
 
 

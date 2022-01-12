@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ApartmentManagement.Business.Abstract;
+using ApartmentManagement.Entities.Dtos.UserMessage;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -20,7 +21,7 @@ namespace ApartmentManagement.WebApi.Controllers
             _userMessageManager = userMessageManager;
         }
 
-        // GET: api/<UserMessagesController>
+ 
         [HttpGet("inbox")]
         public IActionResult GetIncomingMessages()
         {
@@ -33,26 +34,33 @@ namespace ApartmentManagement.WebApi.Controllers
             return Ok(_userMessageManager.GetUserSentMessages());
         }
 
-        // GET api/<UserMessagesController>/5
+
         [HttpGet("{id}")]
         public string Get(int id)
         {
             return "value";
         }
 
-        // POST api/<UserMessagesController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+
+        [HttpPost("mass-message")]
+        public IActionResult AddMassMessage([FromBody] UserMessageSendToAllDto value)
         {
+            return Ok(_userMessageManager.AddMessageForAll(value));
         }
 
-        // PUT api/<UserMessagesController>/5
+        [HttpPost("new-message")]
+        public IActionResult AddNewMessage([FromBody] UserMessageSendToOneDto value)
+        {
+            return Ok(_userMessageManager.AddMessageForOne(value));
+        }
+
+
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
-        // DELETE api/<UserMessagesController>/5
+
         [HttpDelete("{id}")]
         public void Delete(int id)
         {

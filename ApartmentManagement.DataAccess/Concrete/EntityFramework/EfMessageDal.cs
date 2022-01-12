@@ -11,5 +11,13 @@ namespace ApartmentManagement.DataAccess.Concrete.EntityFramework
 {
     public class EfMessageDal : EfEntityRepositoryBase<Message, ApartmentManagementDbContext>, IMessageDal
     {
+        public int GetLastMessageId()
+        {
+            using (var context=new ApartmentManagementDbContext())
+            {
+                var id = context.Set<Message>().ToList().Last().Id;
+                return id;
+            }
+        }
     }
 }

@@ -10,5 +10,6 @@ namespace ApartmentManagement.DataAccess.Abstract
 {
     public interface IMessageDal : IEntityRepository<Message>
     {
+        int GetLastMessageId();
     }
 }

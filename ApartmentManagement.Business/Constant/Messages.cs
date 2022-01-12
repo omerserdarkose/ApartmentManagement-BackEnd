@@ -67,5 +67,17 @@ namespace ApartmentManagement.Business.Constant
         public static string UserClaimNotFound="Kullanıcı Yetkisi Bulunamadı";
         public static string UserClaimUpdated = "Kullanıcı Yetkisi Güncellendi";
         public static string UserClaimCanNotBeRemoved="Bu Yetki Kaldırılamaz. Her Kullanıcının En Az Bir Yetkisi Olmak Zorundadır. Yetkiyi Değiştirebilir yada Kullanıcıyı Silebilirsiniz";
+        public static string ExpenseAdded="Gider Eklendi";
+        public static string ExpenseNotFound="Gider Bulunamadı!";
+        public static string ExpenseUpdated="Gider Güncellendi";
+        public static string ExpenseAddedForAll="Gider Bilgisi Tüm Konutlara Eklendi ve Bilgilendirme Mesajı Gönderildi";
+        public static string ApartmentExpenseAlreadyExist="Bu Gidere Ait Bilgi Zaten Eklenmiş Durumda";
+        public static string ApartmentExpenseAdded="İlgili Konut İçin Gider Bilgisi Eklendi";
+        public static string UnpaidPaymentsNotFound= "Ödenmemiş Faturanız Bulunmamaktadır";
+        public static string ExpenseCanNotBeRemoved="Bu Gidere Ait Ödemeler Tamamlanmadığı İçin Kaldırılamaz";
+        public static string ExpenseRemoved="Gider Kaldırıldı";
+        public static string ExpenseListNotFound="Ödenmemiş veya Aktif Olan Gider Bulunmamaktadır";
+        public static string ExpenseFilterListNotFound="Belirtilen Tarih İçin Ödenmemiş veya Aktif Olan Gider Bulunmamaktadır";
+        public static string PaidPaymentsNotFound = "Ödenmiş Faturanız Bulunmamaktadır";
     }
 }

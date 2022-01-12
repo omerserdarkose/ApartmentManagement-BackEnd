@@ -13,6 +13,7 @@ namespace ApartmentManagement.DataAccess.Abstract
 {
     public interface IUserClaimDal : IEntityRepository<UserClaim>
     {
-        List<UserClaimListViewDto> GetUserClaimListWithDetails(Expression<Func<UserClaimListViewDto, bool>> filter = null)
+        List<UserClaimListViewDto> GetUserClaimListWithDetails(
+            Expression<Func<UserClaimListViewDto, bool>> filter = null);
     }
 }

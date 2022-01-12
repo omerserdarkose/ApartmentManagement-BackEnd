@@ -13,6 +13,6 @@ namespace ApartmentManagement.Business.Abstract
     {
         int Add(MessageAddDto messageAddDto);
 
-        Message GetMessageByDate(DateTime messageDate);
+        int GetLastMessageId();
     }
 }

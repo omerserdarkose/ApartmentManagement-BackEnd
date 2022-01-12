@@ -42,5 +42,14 @@ namespace ApartmentManagement.DataAccess.Concrete.EntityFramework
                 return result.ToList();
             }
         }
+
+        public List<int> GetIdList()
+        {
+            using (var context=new ApartmentManagementDbContext())
+            {
+                var result = context.Set<Apartment>().Where(x=>x.IsActive==true).Select(x => x.Id).ToList();
+                return result;
+            }
+        }
     }
 }

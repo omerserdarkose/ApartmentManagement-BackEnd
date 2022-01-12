@@ -40,6 +40,9 @@ namespace ApartmentManagement.Business.DependencyResolvers.Autofac
             builder.RegisterType<EfApartmentDal>().As<IApartmentDal>();
             builder.RegisterType<ApartmentManager>().As<IApartmentService>();
 
+            builder.RegisterType<EfApartmentExpenseDal>().As<IApartmentExpenseDal>();
+            builder.RegisterType<ApartmentExpenseManager>().As<IApartmentExpenseService>();
+
             builder.RegisterType<EfMessageDal>().As<IMessageDal>();
             builder.RegisterType<MessageManager>().As<IMessageService>();
 
@@ -49,6 +52,14 @@ namespace ApartmentManagement.Business.DependencyResolvers.Autofac
             builder.RegisterType<EfCarDal>().As<ICarDal>();
             builder.RegisterType<CarManager>().As<ICarService>();
 
+            builder.RegisterType<EfUserClaimDal>().As<IUserClaimDal>();
+            builder.RegisterType<UserClaimManager>().As<IUserClaimService>();
+
+            builder.RegisterType<EfClaimDal>().As<IClaimDal>();
+            builder.RegisterType<ClaimManager>().As<IClaimService>();
+
+            builder.RegisterType<EfExpenseDal>().As<IExpenseDal>();
+            builder.RegisterType<ExpenseManager>().As<IExpenseService>();
 
             builder.RegisterType<AuthManager>().As<IAuthService>();
 

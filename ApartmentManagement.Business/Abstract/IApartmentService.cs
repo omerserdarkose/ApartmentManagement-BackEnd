@@ -16,5 +16,8 @@ namespace ApartmentManagement.Business.Abstract
         IResult UpdateStatus(int apartmentId,bool status);
         IResult Delete(int apartmentId);
         IDataResult<List<ApartmentViewDto>> GetAll();
+        List<int> GetIdList();
+        int GetIdByResidentId(int residentId);
+        bool IsHirer(int residentId);
     }
 }

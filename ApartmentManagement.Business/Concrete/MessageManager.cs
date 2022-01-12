@@ -42,14 +42,14 @@ namespace ApartmentManagement.Business.Concrete
             newMessage.Idate=DateTime.Now;
 
             _messageDal.Add(newMessage);
-            var lastMessage = GetMessageByDate(newMessage.Idate);
+            var lastMessageId = GetLastMessageId();
 
-            return lastMessage.Id;
+            return lastMessageId;
         }
 
-        public Message GetMessageByDate(DateTime messageDate)
+        public int GetLastMessageId()
         {
-            return _messageDal.Get(x => x.Idate == messageDate);
+            return _messageDal.GetLastMessageId();
         }
     }
 }

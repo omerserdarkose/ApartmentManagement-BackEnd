@@ -12,5 +12,6 @@ namespace ApartmentManagement.DataAccess.Abstract
     public interface IApartmentDal : IEntityRepository<Apartment>
     {
         List<ApartmentViewDto> GetListWithDetails();
+        List<int> GetIdList();
     }
 }

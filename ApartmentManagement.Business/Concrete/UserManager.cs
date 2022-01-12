@@ -178,13 +178,13 @@ namespace ApartmentManagement.Business.Concrete
             return user;
         }
 
-        public bool UserExists(int userId)
+        public bool UserExistsId(int userId)
         {
             var result = _userDal.Any(x => x.Id == userId);
             return result;
         }
 
-        public bool UserExists(string mail)
+        public bool UserExistsMail(string mail)
         {
             var result = _userDal.Any(x => x.Email == mail);
             return result;

@@ -17,9 +17,9 @@ namespace ApartmentManagement.Business.Abstract
         User GetByMail(string mail);
         User GetById(int userId);
 
-        bool UserExists(int userId);
+        bool UserExistsId(int userId);
 
-        bool UserExists(string mail);
+        bool UserExistsMail(string mail);
 
         int GetUserId(string mail);
 
