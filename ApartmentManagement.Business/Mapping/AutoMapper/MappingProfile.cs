@@ -55,8 +55,11 @@ namespace ApartmentManagement.Business.Mapping.AutoMapper
             CreateMap<UserMessageSendToAllDto, MessageAddDto>();
             CreateMap<UserMessageSendToOneDto, UserMessage>()
                 .ForMember(dest => dest.ToUserId, opt => opt.MapFrom(src => src.RecipientId));
+
+            CreateMap<UserMessageAddDto, UserMessage>();
             CreateMap<UserMessageSendToAllDto, UserMessage>();
             CreateMap<MessageAddDto, Message>();
+            CreateMap<MessageAddForOneDto, MessageAddDto>();
 
             CreateMap<Block, BlockViewDto>();
             CreateMap<BlockAddDto, Block>();
@@ -65,9 +68,9 @@ namespace ApartmentManagement.Business.Mapping.AutoMapper
             CreateMap<UserAddWithDetailsDto, ApartmentUserUpdateDto>();
             CreateMap<UserClaimUpdateDto, UserClaim>();
             CreateMap<ClaimAddDto, Claim>();
-            CreateMap<ExpenseAddDto, Expense>();
+            CreateMap<ExpenseAddForAllDto, Expense>();
             CreateMap<ExpenseUpdateDto, Expense>();
-            CreateMap<ExpenseAddForOneDto, ExpenseAddDto>();
+            CreateMap<ExpenseAddForOneDto, ExpenseAddForAllDto>();
             CreateMap<ApartmentExpenseAddDto, ApartmentExpense>();
 
 

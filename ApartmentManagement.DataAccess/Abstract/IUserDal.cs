@@ -15,5 +15,6 @@ namespace ApartmentManagement.DataAccess.Abstract
         List<UserViewDto> GetUserList();
         List<UserClaimsViewDto> GetClaims(int userId);
         int GetUserId(string eMail);
+        
     }
 }

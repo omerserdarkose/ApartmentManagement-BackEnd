@@ -10,12 +10,13 @@ namespace ApartmentManagement.Business.Abstract
 {
     public interface IExpenseService
     {
-        IResult Add(ExpenseAddDto expenseAddDto);
+        void Add(ExpenseAddForAllDto expenseAddDto);
         IResult Update(ExpenseUpdateDto expenseUpdateDto);
         IResult Delete(int expenseId);
-        IResult AddExpenseForAll(ExpenseAddDto expenseAddDto);
+        IResult AddExpenseForAll(ExpenseAddForAllDto expenseAddDto);
         IResult AddExpenseForOne(ExpenseAddForOneDto expenseAddForOneDto);
         int GetLastExpenseId();
         IDataResult<List<ExpenseViewDto>> GetList();
+        IDataResult<List<ExpenseViewDto>> GetListFilterDate(DateTime dataTime);
     }
 }

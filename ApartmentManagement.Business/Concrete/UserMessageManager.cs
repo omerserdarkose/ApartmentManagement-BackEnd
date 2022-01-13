@@ -38,67 +38,19 @@ namespace ApartmentManagement.Business.Concrete
                 .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value);
         }
 
-        [TransactionScopeAspect]
-        public IResult AddMessageForOne(UserMessageSendToOneDto messageSendToOneDto)
+        
+        public void Add(UserMessageAddDto userMessageAddDto)
         {
-            //alici olup olmadigi check ediliyor
-            if (!_userManager.UserExistsId(userId:messageSendToOneDto.RecipientId))
-            {
-                //yoksa aldici bulunamadi sonucu donuluyor
-                return new ErrorResult(Messages.RecipientNotFound);
-            }
+            var newUserMessage = _mapper.Map<UserMessage>(userMessageAddDto);
 
-            //userMessage entry si olusuruluyor ve UI dan gelen nesneden ilgili alan(aliciId) map ediliyor
-            var newUserMessage = _mapper.Map<UserMessage>(messageSendToOneDto);
-
-            //UI dan gelen nesnenin eklenecek mesaj ile ilgili olan kisimlari(subject ve messagetext) yeni message nesnesine map ediliyor
-            var newMessage = _mapper.Map<MessageAddDto>(messageSendToOneDto);
-
-            //message tablosuna yeni mesaj ekleniyor ve eklenen mesajin Id si aliniyor
-            var messageId = _messageManager.Add(newMessage);
-
-            //usermessage entrysindeki messageId bilgisi ekleniyor
-            newUserMessage.MessageId = messageId;
-
-            newUserMessage.FromUserId = _currentUserId; 
-            newUserMessage.IuserId= _currentUserId;
-            newUserMessage.Idate =DateTime.Now;
-
+            newUserMessage.FromUserId = _currentUserId;
+            newUserMessage.IuserId = _currentUserId;
+            newUserMessage.Idate=DateTime.Now;
+            newUserMessage.IsNew = true;
+            newUserMessage.IsRead = false;
+            newUserMessage.IsActiveFuser = true;
+            newUserMessage.IsActiveToUser = true;
             _userMessageDal.Add(newUserMessage);
-
-            return new SuccessResult(Messages.MessageSend);
-        }
-
-        //[SecuredOperation(Roles:("admin"))]
-        [TransactionScopeAspect]
-        public IResult AddMessageForAll(UserMessageSendToAllDto messageSendToAllDto)
-        {
-            //UI dan gelen nesnenin mesaj bilgileri(subject ve messagetext) yeni message nesnesine map ediliyor
-            var newMessage = _mapper.Map<MessageAddDto>(messageSendToAllDto);
-
-            //message tablosuna yeni mesaj ekleniyor ve eklenen mesajin Id si aliniyor
-            var messageId = _messageManager.Add(newMessage);
-            //kullanici listesi getiriliyor
-            var userList = _userManager.GetAll();
-            //herbir kullanici icin mesaj entrysi olusturulup tabloya ekleniyor
-            foreach (var user in userList.Data.ToArray())
-            {
-                _userMessageDal.Add(new UserMessage()
-                {
-                    FromUserId = _currentUserId,
-                    ToUserId = user.Id,
-                    MessageId = messageId,
-                    IuserId = _currentUserId,
-                    IsNew = true,
-                    IsRead = false,
-                    IsActiveFuser = true,
-                    IsActiveToUser = true,
-                    Idate = DateTime.Now
-                });
-                //hangfire'a islem ekle herkese yeni mesajiniz var emaili atsin
-            }
-
-            return new SuccessResult(Messages.MessageSendAll);
         }
 
         public IDataResult<List<UserMessageIncomingViewDto>> GetUserIncomingMessages()

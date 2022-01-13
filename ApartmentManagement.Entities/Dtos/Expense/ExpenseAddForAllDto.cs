@@ -7,7 +7,7 @@ using ApartmentManagement.Core.Entities;
 
 namespace ApartmentManagement.Entities.Dtos.Expense
 {
-    public class ExpenseAddDto:IDto
+    public class ExpenseAddForAllDto:IDto
     {
         public short TypeId { get; set; }
         public string Name { get; set; }

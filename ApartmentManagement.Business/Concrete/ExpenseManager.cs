@@ -37,13 +37,13 @@ namespace ApartmentManagement.Business.Concrete
                 .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value);
         }
 
-        public IResult Add(ExpenseAddDto expenseAddDto)
+        public void Add(ExpenseAddForAllDto expenseAddDto)
         {
             var newExpense = _mapper.Map<Expense>(expenseAddDto);
             newExpense.IuserId = _currentUserId;
             newExpense.Idate = DateTime.Now;
+            newExpense.IsActive = true;
             _expenseDal.Add(newExpense);
-            return new SuccessResult(Messages.ExpenseAdded);
         }
 
         public int GetLastExpenseId()
@@ -54,11 +54,25 @@ namespace ApartmentManagement.Business.Concrete
         public IDataResult<List<ExpenseViewDto>> GetList()
         {
             var expenseList = _expenseDal.GetListWithPaymentInfo();
-            var mounthList = _expenseDal.GetListWithPaymentInfo(x=>x.Date.Month==12);
+            if (expenseList is null)
+            {
+                return new SuccessDataResult<List<ExpenseViewDto>>(Messages.ExpenseListNotFound);
+            }
 
-            throw new NotImplementedException();
+            return new SuccessDataResult<List<ExpenseViewDto>>(expenseList);
         }
 
+        public IDataResult<List<ExpenseViewDto>> GetListFilterDate(DateTime dateTime)
+        {
+            var expenseList = _expenseDal.GetListWithPaymentInfo( x => x.Date.Month == dateTime.Month&&x.Date.Year==dateTime.Year);
+            if (expenseList is null)
+            {
+                return new SuccessDataResult<List<ExpenseViewDto>>(Messages.ExpenseFilterListNotFound);
+            }
+
+            return new SuccessDataResult<List<ExpenseViewDto>>(expenseList);
+        }
+        
 
         public IResult Update(ExpenseUpdateDto expenseUpdateDto)
         {
@@ -99,7 +113,7 @@ namespace ApartmentManagement.Business.Concrete
         }
 
         [TransactionScopeAspect]
-        public IResult AddExpenseForAll(ExpenseAddDto expenseAddDto)
+        public IResult AddExpenseForAll(ExpenseAddForAllDto expenseAddDto)
         {
 
             Add(expenseAddDto);
@@ -122,7 +136,7 @@ namespace ApartmentManagement.Business.Concrete
 
         public IResult AddExpenseForOne(ExpenseAddForOneDto expenseAddForOneDto)
         {
-            var newExpense = _mapper.Map<ExpenseAddDto>(expenseAddForOneDto);
+            var newExpense = _mapper.Map<ExpenseAddForAllDto>(expenseAddForOneDto);
 
             Add(newExpense);
 

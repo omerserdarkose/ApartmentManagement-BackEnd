@@ -26,6 +26,12 @@ namespace ApartmentManagement.WebApi.Controllers
             return Ok(_apartmentManager.GetAll());
         }
 
+        [HttpGet("residents")]
+        public IActionResult GetResidents()
+        {
+            return Ok(_apartmentManager.GetAllResident());
+        }
+
         // GET api/<ApartmetsController>/5
         [HttpGet("{id}")]
         public string Get(int id)

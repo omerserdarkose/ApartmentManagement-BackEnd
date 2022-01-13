@@ -57,6 +57,8 @@ namespace ApartmentManagement.DataAccess.Concrete.EntityFramework
             }
         }
 
+        
+
         public List<UserClaimsViewDto> GetClaims(int userId)
         {
             using (var context = new ApartmentManagementDbContext())
@@ -81,5 +83,7 @@ namespace ApartmentManagement.DataAccess.Concrete.EntityFramework
                 return context.Set<User>().SingleOrDefault(x => x.Email == eMail).Id;
             }
         }
+
+
     }
 }

@@ -10,8 +10,8 @@ namespace ApartmentManagement.Business.Abstract
 {
     public interface IUserMessageService
     {
-        IResult AddMessageForOne(UserMessageSendToOneDto messageSendToOneDto);
-        IResult AddMessageForAll(UserMessageSendToAllDto messageSendToAllDto);
+
+        void Add(UserMessageAddDto userMessageAddDto);
 
         IDataResult<List<UserMessageIncomingViewDto>> GetUserIncomingMessages();
         IDataResult<List<UserMessageSentViewDto>> GetUserSentMessages();

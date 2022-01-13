@@ -53,6 +53,8 @@ namespace ApartmentManagement.Business.Concrete
             return new SuccessDataResult<List<UserViewDto>>(userList);
         }
 
+
+
         public IResult Add(User newUser)
         {
             newUser.IuserId = _currentUserId;
@@ -127,13 +129,15 @@ namespace ApartmentManagement.Business.Concrete
             //yeni eklenen kullanici icin default yetki atamasi yapiliyor
             _userClaimManager.AddDefault(newUserId);
 
-
-            foreach (string licensePlate in newUserWithDetails.LicensePlate.ToArray())
+            //arac plaka bilgisi varsa
+            if (newUserWithDetails.LicensePlate != null)
             {
-                _carManager.Add(new CarAddDto() {LicensePlate = licensePlate, UserId = newUserId});
+                foreach (string licensePlate in newUserWithDetails.LicensePlate.ToArray())
+                {
+                    //herbir plaka icin car tablosuna kayit ekleniyor
+                    _carManager.Add(new CarAddDto() { LicensePlate = licensePlate, UserId = newUserId });
+                }
             }
-
-
 
             return new SuccessResult(Messages.UserAddedWithInfos);
         }

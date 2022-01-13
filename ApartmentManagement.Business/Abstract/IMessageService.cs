@@ -11,8 +11,9 @@ namespace ApartmentManagement.Business.Abstract
 {
     public interface IMessageService
     {
-        int Add(MessageAddDto messageAddDto);
-
+        IResult SendMessageToAll(MessageAddDto messageAddForAllDto);
+        IResult SendMessageToOne(MessageAddForOneDto messageAddForOneDto);
+        void Add(MessageAddDto messageAddDto);
         int GetLastMessageId();
     }
 }

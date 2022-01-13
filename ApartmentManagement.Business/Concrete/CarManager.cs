@@ -43,6 +43,7 @@ namespace ApartmentManagement.Business.Concrete
             var newCar = _mapper.Map<Car>(carAddDto);
             newCar.IuserId = _currentUserId;
             newCar.Idate=DateTime.Now;
+            newCar.IsActive = true;
             _carDal.Add(newCar);
             return new SuccessResult(Messages.CarAdded);
         }

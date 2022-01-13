@@ -61,13 +61,13 @@ namespace ApartmentManagement.Business.Concrete
         public IDataResult<List<ApartmentExpenseViewDto>> GetUnPaidPayments()
         {
             var apartmentId = _apartmentManager.GetIdByResidentId(_currentUserId);
-            var pendingPayments = _apartmentExpenseDal.GetUnPaidPayments(x=>x.ApartmentId==apartmentId);
-            if (pendingPayments is null)
+            var unpaidPayments = _apartmentExpenseDal.GetUnPaidPayments(x=>x.ApartmentId==apartmentId);
+            if (unpaidPayments is null)
             {
-                return new SuccessDataResult<List<ApartmentExpenseViewDto>>(Messages.PendingPaymentsNotFound);
+                return new SuccessDataResult<List<ApartmentExpenseViewDto>>(Messages.UnpaidPaymentsNotFound);
             }
 
-            return new SuccessDataResult<List<ApartmentExpenseViewDto>>(pendingPayments);
+            return new SuccessDataResult<List<ApartmentExpenseViewDto>>(unpaidPayments);
         }
 
      
@@ -77,7 +77,7 @@ namespace ApartmentManagement.Business.Concrete
             var paidPayments = _apartmentExpenseDal.GetPaidPayments(x => x.ApartmentId == apartmentId);
             if (paidPayments is null)
             {
-                return new SuccessDataResult<List<ApartmentExpenseViewDto>>(Messages.PendingPaymentsNotFound);
+                return new SuccessDataResult<List<ApartmentExpenseViewDto>>(Messages.PaidPaymentsNotFound);
             }
 
             return new SuccessDataResult<List<ApartmentExpenseViewDto>>(paidPayments);

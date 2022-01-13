@@ -17,39 +17,96 @@ using Microsoft.AspNetCore.Http;
 
 namespace ApartmentManagement.Business.Concrete
 {
-    public class MessageManager:IMessageService
+    public class MessageManager : IMessageService
     {
         private IMessageDal _messageDal;
+        private IUserService _userManager;
+        private IApartmentService _apartmentManager;
+        private IUserMessageService _userMessageManager;
         private IMapper _mapper;
         private IHttpContextAccessor _httpContextAccessor;
         private int _currentUserId;
 
-        public MessageManager(IMessageDal messageDal, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+        public MessageManager(IMessageDal messageDal, IMapper mapper, IHttpContextAccessor httpContextAccessor, IUserService userManager, IUserMessageService userMessageManager, IApartmentService apartmentManager)
         {
             _messageDal = messageDal;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
+            _userManager = userManager;
+            _userMessageManager = userMessageManager;
+            _apartmentManager = apartmentManager;
             _currentUserId = Convert.ToInt32(_httpContextAccessor.HttpContext.User.Claims
                 .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value);
         }
-        
+
         //[TransactionScopeAspect]
-        public int Add(MessageAddDto messageAddDto)
+        public void Add(MessageAddDto messageAddDto)
         {
             var newMessage = _mapper.Map<Message>(messageAddDto);
-            
+
             newMessage.IuserId = _currentUserId;
-            newMessage.Idate=DateTime.Now;
+            newMessage.Idate = DateTime.Now;
 
             _messageDal.Add(newMessage);
-            var lastMessageId = GetLastMessageId();
+        }
 
-            return lastMessageId;
+        //[SecuredOperation(Roles:("admin"))]
+        [TransactionScopeAspect]
+        public IResult SendMessageToAll(MessageAddDto messageAddForAllDto)
+        {
+            //UI dan gelen nesnenin mesaj bilgileri(subject ve messagetext) yeni mesaj olarak message tablosuna ekleniyor
+            Add(messageAddForAllDto);
+            //eklenen mesajin Id si aliniyor
+            var messageId = GetLastMessageId();
+            //kullanici listesi getiriliyor
+            var userList = _apartmentManager.GetAllResident();
+            //herbir kullanici icin mesaj entrysi olusturulup tabloya ekleniyor
+            foreach (var user in userList.Data.ToArray())
+            {
+                _userMessageManager.Add(new UserMessageAddDto()
+                {
+                    MessageId = messageId,
+                    ToUserId = user.Id,
+                });
+                //hangfire'a islem ekle herkese yeni mesajiniz var emaili atsin
+            }
+
+            return new SuccessResult(Messages.MessageSendAll);
+        }
+
+        [TransactionScopeAspect]
+        public IResult SendMessageToOne(MessageAddForOneDto messageAddForOneDto)
+        {
+            //alici olup olmadigi check ediliyor
+            if (!_userManager.UserExistsId(userId: messageAddForOneDto.RecipientId))
+            {
+                //yoksa aldici bulunamadi sonucu donuluyor
+                return new ErrorResult(Messages.RecipientNotFound);
+            }
+
+            //UI dan gelen nesnenin eklenecek mesaj ile ilgili olan kisimlari(subject ve messagetext) yeni messageadd nesnesine map ediliyor
+            var newMessage = _mapper.Map<MessageAddDto>(messageAddForOneDto);
+
+            //message tablosuna yeni mesaj ekleniyor ve eklenen mesajin Id si aliniyor
+            Add(newMessage);
+
+            //eklenen mesajin Id si aliniyor
+            var messageId = GetLastMessageId();
+
+            _userMessageManager.Add(new UserMessageAddDto()
+            {
+                MessageId = messageId,
+                ToUserId = messageAddForOneDto.RecipientId,
+            });
+
+            return new SuccessResult(Messages.MessageSend);
         }
 
         public int GetLastMessageId()
         {
             return _messageDal.GetLastMessageId();
         }
+
+
     }
 }

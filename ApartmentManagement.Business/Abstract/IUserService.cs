@@ -13,6 +13,7 @@ namespace ApartmentManagement.Business.Abstract
     public interface IUserService
     {
         IDataResult<List<UserViewDto>> GetAll();
+       
 
         User GetByMail(string mail);
         User GetById(int userId);

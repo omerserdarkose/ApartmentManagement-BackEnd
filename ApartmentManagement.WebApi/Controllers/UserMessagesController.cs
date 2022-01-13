@@ -42,19 +42,6 @@ namespace ApartmentManagement.WebApi.Controllers
         }
 
 
-        [HttpPost("mass-message")]
-        public IActionResult AddMassMessage([FromBody] UserMessageSendToAllDto value)
-        {
-            return Ok(_userMessageManager.AddMessageForAll(value));
-        }
-
-        [HttpPost("new-message")]
-        public IActionResult AddNewMessage([FromBody] UserMessageSendToOneDto value)
-        {
-            return Ok(_userMessageManager.AddMessageForOne(value));
-        }
-
-
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {

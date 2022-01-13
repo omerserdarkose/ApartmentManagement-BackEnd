@@ -24,8 +24,8 @@ namespace ApartmentManagement.WebApi.Controllers
         {
             return Ok(_userManager.GetAll());
         }
-
-
+        
+        
         [HttpPost]
         public IActionResult Add([FromBody] UserAddWithDetailsDto newUser)
         {

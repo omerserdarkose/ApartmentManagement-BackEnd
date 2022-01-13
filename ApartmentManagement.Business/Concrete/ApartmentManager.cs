@@ -10,6 +10,7 @@ using ApartmentManagement.Core.Utilities.Result;
 using ApartmentManagement.DataAccess.Abstract;
 using ApartmentManagement.Entities.Concrete;
 using ApartmentManagement.Entities.Dtos.Apartment;
+using ApartmentManagement.Entities.Dtos.User;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 
@@ -38,9 +39,16 @@ namespace ApartmentManagement.Business.Concrete
 
         }
 
+        public IDataResult<List<UserViewDto>> GetAllResident()
+        {
+            var userList = _apartmentDal.GetResidentList();
+
+            return new SuccessDataResult<List<UserViewDto>>(userList);
+        }
+
         public List<int> GetIdList()
         {
-            var idList = _apartmentDal.GetIdList();
+            var idList = _apartmentDal.GetApartmentIdList();
             return idList;
         }
 
