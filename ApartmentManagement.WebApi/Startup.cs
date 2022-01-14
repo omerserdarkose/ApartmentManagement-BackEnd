@@ -14,6 +14,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ApartmentManagement.Core.Utilities.Security;
 using ApartmentManagement.Core.Utilities.Security.Encryption;
+using ApartmentManagement.Core.Utilities.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 
@@ -47,6 +48,13 @@ namespace ApartmentManagement.WebApi
             {
                 options.AddPolicy("AllowOrigin", builder => builder.WithOrigins("http://localhost:44394"));
             });
+
+            services.Configure<MongoSettings>(options =>
+            {
+                options.ConnectionString = Configuration.GetSection("MongoConnection:ConnectionString").Value;
+                options.Database = Configuration.GetSection("MongoConnection:Database").Value;
+            });
+
 
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(

@@ -15,6 +15,7 @@ using ApartmentManagement.Entities.Dtos.Car;
 using ApartmentManagement.Entities.Dtos.Claim;
 using ApartmentManagement.Entities.Dtos.Expense;
 using ApartmentManagement.Entities.Dtos.Message;
+using ApartmentManagement.Entities.Dtos.Payment;
 using ApartmentManagement.Entities.Dtos.User;
 using ApartmentManagement.Entities.Dtos.UserClaim;
 using ApartmentManagement.Entities.Dtos.UserDetail;
@@ -72,6 +73,7 @@ namespace ApartmentManagement.Business.Mapping.AutoMapper
             CreateMap<ExpenseUpdateDto, Expense>();
             CreateMap<ExpenseAddForOneDto, ExpenseAddForAllDto>();
             CreateMap<ApartmentExpenseAddDto, ApartmentExpense>();
+            CreateMap<Payment, PaymentViewDto>();
 
 
 

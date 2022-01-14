@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using ApartmentManagement.Core.Utilities.Interceptors;
 using ApartmentManagement.Core.Utilities.Security;
 using ApartmentManagement.Core.Utilities.Security.JWT;
+using ApartmentManagement.DataAccess.Concrete.Mongo;
 using Autofac.Extras.DynamicProxy;
 using Castle.DynamicProxy;
 using Module = Autofac.Module;
@@ -60,6 +61,9 @@ namespace ApartmentManagement.Business.DependencyResolvers.Autofac
 
             builder.RegisterType<EfExpenseDal>().As<IExpenseDal>();
             builder.RegisterType<ExpenseManager>().As<IExpenseService>();
+
+            builder.RegisterType<MPaymentDal>().As<IPaymentDal>();
+            builder.RegisterType<PaymentManager>().As<IPaymentService>();
 
             builder.RegisterType<AuthManager>().As<IAuthService>();
 
