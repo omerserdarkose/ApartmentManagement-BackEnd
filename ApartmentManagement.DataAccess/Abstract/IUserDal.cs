@@ -1,5 +1,7 @@
-﻿using ApartmentManagement.Core.DataAccess;
+﻿using System;
+using ApartmentManagement.Core.DataAccess;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using ApartmentManagement.Core.Entities.Concrete;
 using ApartmentManagement.Entities.Dtos.User;
 

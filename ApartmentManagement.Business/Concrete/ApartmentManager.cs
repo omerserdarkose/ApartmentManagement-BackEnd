@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ApartmentManagement.Business.Abstract;
 using ApartmentManagement.Business.Constant;
+using ApartmentManagement.Core.Extensions;
 using ApartmentManagement.Core.Utilities.Result;
 using ApartmentManagement.DataAccess.Abstract;
 using ApartmentManagement.Entities.Concrete;
@@ -21,15 +22,12 @@ namespace ApartmentManagement.Business.Concrete
         private IApartmentDal _apartmentDal;
         private IMapper _mapper;
         private IHttpContextAccessor _httpContextAccessor;
-        private int _currentUserId;
 
         public ApartmentManager(IApartmentDal apartmentDal, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             _apartmentDal = apartmentDal;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
-            _currentUserId = Convert.ToInt32(_httpContextAccessor.HttpContext.User.Claims
-                .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value);
         }
 
         public IDataResult<List<ApartmentViewDto>> GetAll()
@@ -76,7 +74,7 @@ namespace ApartmentManagement.Business.Concrete
             }
 
             var newApartment = _mapper.Map<Apartment>(apartmentAddDto);
-            newApartment.IuserId = _currentUserId;
+            newApartment.IuserId = _httpContextAccessor.HttpContext.User.GetLoggedUserId();
             newApartment.Idate=DateTime.Now;
             _apartmentDal.Add(newApartment);
 
@@ -93,7 +91,7 @@ namespace ApartmentManagement.Business.Concrete
             }
 
             apartment = _mapper.Map(apartmentUpdateDto,apartment);
-            apartment.UuserId = _currentUserId;
+            apartment.UuserId = _httpContextAccessor.HttpContext.User.GetLoggedUserId();
             apartment.Udate = DateTime.Now;
             _apartmentDal.Update(apartment);
 
@@ -136,7 +134,7 @@ namespace ApartmentManagement.Business.Concrete
                 }
             }
 
-            apartment.UuserId = _currentUserId;
+            apartment.UuserId = _httpContextAccessor.HttpContext.User.GetLoggedUserId();
             apartment.Udate = DateTime.Now;
             _apartmentDal.Update(apartment);
 
@@ -155,7 +153,7 @@ namespace ApartmentManagement.Business.Concrete
             }
 
             apartment.Status = status;
-            apartment.UuserId = _currentUserId;
+            apartment.UuserId = _httpContextAccessor.HttpContext.User.GetLoggedUserId();
             apartment.Udate = DateTime.Now;
             _apartmentDal.Update(apartment);
 
@@ -172,7 +170,7 @@ namespace ApartmentManagement.Business.Concrete
             }
 
             apartment.IsActive = false;
-            apartment.UuserId = _currentUserId;
+            apartment.UuserId = _httpContextAccessor.HttpContext.User.GetLoggedUserId();
             apartment.Udate = DateTime.Now;
             _apartmentDal.Update(apartment);
 

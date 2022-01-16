@@ -25,7 +25,6 @@ namespace ApartmentManagement.WebApi.Controllers
             return Ok(_userManager.GetAll());
         }
         
-        
         [HttpPost]
         public IActionResult Add([FromBody] UserAddWithDetailsDto newUser)
         {
@@ -52,7 +51,7 @@ namespace ApartmentManagement.WebApi.Controllers
         }
 
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{userId}")]
         public IActionResult Delete(int userId)
         {
             var result=_userManager.Delete(userId);
@@ -64,7 +63,7 @@ namespace ApartmentManagement.WebApi.Controllers
             return Ok(result.Message);
         }
 
-        [HttpPost("{id}")]
+        [HttpPost("reset/{userId}")]
         public IActionResult PasswordReset(int userId)
         {
             var passReset = _userManager.PasswordReset(userId);

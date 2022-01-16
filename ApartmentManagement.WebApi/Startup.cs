@@ -46,7 +46,7 @@ namespace ApartmentManagement.WebApi
 
             services.AddCors(options =>
             {
-                options.AddPolicy("AllowOrigin", builder => builder.WithOrigins("http://localhost:44394"));
+                options.AddPolicy("AllowOrigin", builder => builder.WithOrigins("http://localhost:44394", "http://localhost:3000"));
             });
 
             services.Configure<MongoSettings>(options =>
@@ -80,7 +80,7 @@ namespace ApartmentManagement.WebApi
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ApartmentManagement.WebApi v1"));
             }
 
-            app.UseCors(builder => builder.WithOrigins("http://localhost:44394").AllowAnyHeader());
+            app.UseCors(builder => builder.WithOrigins("http://localhost:44394", "http://localhost:3000").AllowAnyMethod().AllowAnyHeader());
 
             app.UseHttpsRedirection();
 

@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ApartmentManagement.Business.Validation.FluentValidation;
 using ApartmentManagement.Core.Aspects.Autofac;
+using ApartmentManagement.Core.Extensions;
 using ApartmentManagement.Core.Utilities.Security;
 using Microsoft.AspNetCore.Http;
 
@@ -24,22 +25,19 @@ namespace ApartmentManagement.Business.Concrete
         private IExpenseTypeDal _expenseTypeDal;
         private IMapper _mapper;
         private IHttpContextAccessor _httpContextAccessor;
-        private int _currentUserId;
 
         public ExpenseTypeManager(IExpenseTypeDal expenseTypeDal, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             _expenseTypeDal = expenseTypeDal;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
-            _currentUserId = Convert.ToInt32(_httpContextAccessor.HttpContext.User.Claims
-                .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value);
         }
 
         [ValidationAspect(typeof(ExpenseTypeValidator))]
         public IResult Add(ExpenseTypeAddDto expenseTypeAddDto)
         {
             var expenseType = _mapper.Map<ExpenseType>(expenseTypeAddDto);
-            expenseType.IuserId = _currentUserId;
+            expenseType.IuserId = _httpContextAccessor.HttpContext.User.GetLoggedUserId();
             expenseType.Idate=DateTime.Now;
             _expenseTypeDal.Add(expenseType);
 
@@ -54,7 +52,7 @@ namespace ApartmentManagement.Business.Concrete
                 return new ErrorResult(Messages.ExpenseTypeNotFound);
             }
             expenseType.IsActive = false;
-            expenseType.UuserId = _currentUserId;
+            expenseType.UuserId = _httpContextAccessor.HttpContext.User.GetLoggedUserId();
             expenseType.Udate = DateTime.Now;
             _expenseTypeDal.Update(expenseType);
 
@@ -64,7 +62,7 @@ namespace ApartmentManagement.Business.Concrete
 
         public IDataResult<List<ExpenseTypeViewDto>> GetAll()
         {
-            var x=_currentUserId;
+            var x=_httpContextAccessor.HttpContext.User.GetLoggedUserId();
             var expenseTypeList = _expenseTypeDal.GetList(x=>x.IsActive==true);
             var expenseTypeViewList = _mapper.Map<List<ExpenseTypeViewDto>>(expenseTypeList);
 
@@ -80,7 +78,7 @@ namespace ApartmentManagement.Business.Concrete
             }
 
             expenseType = _mapper.Map(expenseTypeUpdateDto, expenseType);
-            expenseType.UuserId = _currentUserId;
+            expenseType.UuserId = _httpContextAccessor.HttpContext.User.GetLoggedUserId();
             expenseType.Udate = DateTime.Now;
 
             _expenseTypeDal.Update(expenseType);

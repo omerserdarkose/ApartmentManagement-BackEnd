@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ApartmentManagement.Business.Abstract;
 using ApartmentManagement.Business.Constant;
 using ApartmentManagement.Core.Aspects.Autofac;
+using ApartmentManagement.Core.Extensions;
 using ApartmentManagement.Core.Utilities.Result;
 using ApartmentManagement.DataAccess.Abstract;
 using ApartmentManagement.Entities.Concrete;
@@ -25,7 +26,6 @@ namespace ApartmentManagement.Business.Concrete
         private IUserMessageService _userMessageManager;
         private IMapper _mapper;
         private IHttpContextAccessor _httpContextAccessor;
-        private int _currentUserId;
 
         public MessageManager(IMessageDal messageDal, IMapper mapper, IHttpContextAccessor httpContextAccessor, IUserService userManager, IUserMessageService userMessageManager, IApartmentService apartmentManager)
         {
@@ -35,8 +35,6 @@ namespace ApartmentManagement.Business.Concrete
             _userManager = userManager;
             _userMessageManager = userMessageManager;
             _apartmentManager = apartmentManager;
-            _currentUserId = Convert.ToInt32(_httpContextAccessor.HttpContext.User.Claims
-                .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value);
         }
 
         //[TransactionScopeAspect]
@@ -44,7 +42,7 @@ namespace ApartmentManagement.Business.Concrete
         {
             var newMessage = _mapper.Map<Message>(messageAddDto);
 
-            newMessage.IuserId = _currentUserId;
+            newMessage.IuserId = _httpContextAccessor.HttpContext.User.GetLoggedUserId();
             newMessage.Idate = DateTime.Now;
 
             _messageDal.Add(newMessage);

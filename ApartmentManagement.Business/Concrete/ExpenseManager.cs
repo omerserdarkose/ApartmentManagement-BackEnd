@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ApartmentManagement.Business.Abstract;
 using ApartmentManagement.Business.Constant;
 using ApartmentManagement.Core.Aspects.Autofac;
+using ApartmentManagement.Core.Extensions;
 using ApartmentManagement.Core.Utilities.Result;
 using ApartmentManagement.DataAccess.Abstract;
 using ApartmentManagement.Entities.Concrete;
@@ -23,7 +24,6 @@ namespace ApartmentManagement.Business.Concrete
         private IMapper _mapper;
         private IApartmentService _apartmentManager;
         private IHttpContextAccessor _httpContextAccessor;
-        private int _currentUserId;
         private IApartmentExpenseService _apartmentExpenseManager;
 
         public ExpenseManager(IExpenseDal expenseDal, IMapper mapper, IHttpContextAccessor httpContextAccessor, IApartmentService apartmentManager, IApartmentExpenseService apartmentExpenseManager)
@@ -33,14 +33,12 @@ namespace ApartmentManagement.Business.Concrete
             _httpContextAccessor = httpContextAccessor;
             _apartmentManager = apartmentManager;
             _apartmentExpenseManager = apartmentExpenseManager;
-            _currentUserId = Convert.ToInt32(_httpContextAccessor.HttpContext.User.Claims
-                .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value);
         }
 
         public void Add(ExpenseAddForAllDto expenseAddDto)
         {
             var newExpense = _mapper.Map<Expense>(expenseAddDto);
-            newExpense.IuserId = _currentUserId;
+            newExpense.IuserId = _httpContextAccessor.HttpContext.User.GetLoggedUserId();
             newExpense.Idate = DateTime.Now;
             newExpense.IsActive = true;
             _expenseDal.Add(newExpense);
@@ -84,7 +82,7 @@ namespace ApartmentManagement.Business.Concrete
             }
 
             expense = _mapper.Map(expenseUpdateDto, expense);
-            expense.UuserId = _currentUserId;
+            expense.UuserId = _httpContextAccessor.HttpContext.User.GetLoggedUserId();
             expense.Udate = DateTime.Now;
             _expenseDal.Update(expense);
             return new SuccessResult(Messages.ExpenseUpdated);
@@ -105,7 +103,7 @@ namespace ApartmentManagement.Business.Concrete
             }
 
             expense.IsActive = false;
-            expense.UuserId = _currentUserId;
+            expense.UuserId = _httpContextAccessor.HttpContext.User.GetLoggedUserId();
             expense.Udate = DateTime.Now;
             _expenseDal.Update(expense);
 

@@ -25,8 +25,6 @@ namespace ApartmentManagement.Business.Concrete
         private IUserService _userManager;
         private IMapper _mapper;
         private IHttpContextAccessor _httpContextAccessor;
-        private int _currentUserId;
-
         public UserMessageManager(IUserMessageDal userMessageDal, IMessageService messageManager, IMapper mapper, IUserService userManager, IHttpContextAccessor httpContextAccessor)
         {
             _userMessageDal = userMessageDal;
@@ -34,8 +32,6 @@ namespace ApartmentManagement.Business.Concrete
             _mapper = mapper;
             _userManager = userManager;
             _httpContextAccessor = httpContextAccessor;
-            _currentUserId = Convert.ToInt32(_httpContextAccessor.HttpContext.User.Claims
-                .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value);
         }
 
         
@@ -43,8 +39,8 @@ namespace ApartmentManagement.Business.Concrete
         {
             var newUserMessage = _mapper.Map<UserMessage>(userMessageAddDto);
 
-            newUserMessage.FromUserId = _currentUserId;
-            newUserMessage.IuserId = _currentUserId;
+            newUserMessage.FromUserId = _httpContextAccessor.HttpContext.User.GetLoggedUserId();
+            newUserMessage.IuserId = _httpContextAccessor.HttpContext.User.GetLoggedUserId();
             newUserMessage.Idate=DateTime.Now;
             newUserMessage.IsNew = true;
             newUserMessage.IsRead = false;
@@ -55,7 +51,7 @@ namespace ApartmentManagement.Business.Concrete
 
         public IDataResult<List<UserMessageIncomingViewDto>> GetUserIncomingMessages()
         {
-            var incomingMessages = _userMessageDal.GetIncomingMessages(_currentUserId);
+            var incomingMessages = _userMessageDal.GetIncomingMessages(_httpContextAccessor.HttpContext.User.GetLoggedUserId());
             if (incomingMessages is null)
             {
                 return new ErrorDataResult<List<UserMessageIncomingViewDto>>(Messages.UserMessageIncomingNotExist);
@@ -66,7 +62,7 @@ namespace ApartmentManagement.Business.Concrete
 
         public IDataResult<List<UserMessageSentViewDto>> GetUserSentMessages()
         {
-            var sentMessages = _userMessageDal.GetSentMessages(_currentUserId);
+            var sentMessages = _userMessageDal.GetSentMessages(_httpContextAccessor.HttpContext.User.GetLoggedUserId());
             if (sentMessages is null)
             {
                 return new ErrorDataResult<List<UserMessageSentViewDto>>(Messages.UserMessageSentNotExist);

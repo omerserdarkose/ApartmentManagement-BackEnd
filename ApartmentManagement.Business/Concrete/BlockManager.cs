@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ApartmentManagement.Business.Abstract;
 using ApartmentManagement.Business.Constant;
+using ApartmentManagement.Core.Extensions;
 using ApartmentManagement.Core.Utilities.Result;
 using ApartmentManagement.DataAccess.Abstract;
 using ApartmentManagement.Entities.Concrete;
@@ -19,7 +20,6 @@ namespace ApartmentManagement.Business.Concrete
     {
         private IBlockDal _blockDal;
         private IHttpContextAccessor _httpContextAccessor;
-        private int _currentUserId;
         private IMapper _mapper;
 
         public BlockManager(IBlockDal blockDal, IHttpContextAccessor httpContextAccessor, IMapper mapper)
@@ -27,8 +27,6 @@ namespace ApartmentManagement.Business.Concrete
             _blockDal = blockDal;
             _httpContextAccessor = httpContextAccessor;
             _mapper = mapper;
-            _currentUserId = Convert.ToInt32(_httpContextAccessor.HttpContext.User.Claims
-                .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value);
         }
 
         public IDataResult<List<BlockViewDto>> GetAll()
@@ -47,7 +45,7 @@ namespace ApartmentManagement.Business.Concrete
             }
 
             var newBlock = _mapper.Map<Block>(blockAddDto);
-            newBlock.IuserId = _currentUserId;
+            newBlock.IuserId = _httpContextAccessor.HttpContext.User.GetLoggedUserId();
             newBlock.Idate=DateTime.Now;
             _blockDal.Add(newBlock);
             return new SuccessResult(Messages.BlockAdded);
@@ -62,7 +60,7 @@ namespace ApartmentManagement.Business.Concrete
             }
 
             updateBlock = _mapper.Map(updateBlockDto, updateBlock);
-            updateBlock.UuserId = _currentUserId;
+            updateBlock.UuserId = _httpContextAccessor.HttpContext.User.GetLoggedUserId();
             updateBlock.Udate = DateTime.Now;
             _blockDal.Update(updateBlock);
             return new SuccessResult(Messages.BlockUpdated);
@@ -77,7 +75,7 @@ namespace ApartmentManagement.Business.Concrete
             }
 
             deleteBlock.IsActive = false;
-            deleteBlock.UuserId = _currentUserId;
+            deleteBlock.UuserId = _httpContextAccessor.HttpContext.User.GetLoggedUserId();
             deleteBlock.Udate = DateTime.Now;
             _blockDal.Update(deleteBlock);
             return new SuccessResult(Messages.BlockRemoved);

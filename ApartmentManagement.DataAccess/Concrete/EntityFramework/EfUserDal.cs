@@ -1,7 +1,9 @@
-﻿using ApartmentManagement.Core.DataAccess.EntitiyFramework;
+﻿using System;
+using ApartmentManagement.Core.DataAccess.EntitiyFramework;
 using ApartmentManagement.DataAccess.Abstract;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using ApartmentManagement.Core.Entities.Concrete;
 using ApartmentManagement.DataAccess.Context;
 using ApartmentManagement.Entities.Dtos.User;
@@ -52,34 +54,33 @@ namespace ApartmentManagement.DataAccess.Concrete.EntityFramework
                 return result.ToList();
             }
         }
-
         
 
-        public List<UserClaimsViewDto> GetClaims(int userId)
+    public List<UserClaimsViewDto> GetClaims(int userId)
+    {
+        using (var context = new ApartmentManagementDbContext())
         {
-            using (var context = new ApartmentManagementDbContext())
-            {
-                var result = from userClaim in context.UserClaims
-                             join claim in context.Claims
-                                 on userClaim.ClaimId equals claim.Id
-                             where userClaim.Id == userId && claim.IsActive == true
-                             select new UserClaimsViewDto()
-                             {
-                                 Id = claim.Id,
-                                 ClaimName = claim.Name
-                             };
-                return result.ToList();
-            }
+            var result = from userClaim in context.UserClaims
+                         join claim in context.Claims
+                             on userClaim.ClaimId equals claim.Id
+                         where userClaim.Id == userId && claim.IsActive == true
+                         select new UserClaimsViewDto()
+                         {
+                             Id = claim.Id,
+                             ClaimName = claim.Name
+                         };
+            return result.ToList();
         }
-
-        public int GetUserId(string eMail)
-        {
-            using (var context = new ApartmentManagementDbContext())
-            {
-                return context.Set<User>().SingleOrDefault(x => x.Email == eMail).Id;
-            }
-        }
-
-
     }
+
+    public int GetUserId(string eMail)
+    {
+        using (var context = new ApartmentManagementDbContext())
+        {
+            return context.Set<User>().SingleOrDefault(x => x.Email == eMail).Id;
+        }
+    }
+
+
+}
 }

@@ -11,11 +11,11 @@ namespace ApartmentManagement.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ApartmetsController : ControllerBase
+    public class ApartmentsController : ControllerBase
     {
         private IApartmentService _apartmentManager;
 
-        public ApartmetsController(IApartmentService apartmentManager)
+        public ApartmentsController(IApartmentService apartmentManager)
         {
             _apartmentManager = apartmentManager;
         }

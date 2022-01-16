@@ -6,6 +6,7 @@ using ApartmentManagement.Business.Abstract;
 using ApartmentManagement.Business.Constant;
 using ApartmentManagement.Core.Aspects.Autofac;
 using ApartmentManagement.Core.Entities.Concrete;
+using ApartmentManagement.Core.Extensions;
 using ApartmentManagement.Core.Utilities.Result;
 using ApartmentManagement.Core.Utilities.Security.Hashing;
 using ApartmentManagement.Core.Utilities.Security.PasswordCreator;
@@ -31,7 +32,6 @@ namespace ApartmentManagement.Business.Concrete
 
         private IMapper _mapper;
         private IHttpContextAccessor _httpContextAccessor;
-        private int _currentUserId;
 
         public UserManager(IUserDal userDal, IMapper mapper, IUserDetailService userDetailManager, IHttpContextAccessor httpContextAccessor, IApartmentService apartmentManager, ICarService carManager, IUserClaimService userClaimManager)
         {
@@ -42,8 +42,6 @@ namespace ApartmentManagement.Business.Concrete
             _apartmentManager = apartmentManager;
             _carManager = carManager;
             _userClaimManager = userClaimManager;
-            _currentUserId = Convert.ToInt32(_httpContextAccessor.HttpContext.User.Claims
-                .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value);
         }
 
         public IDataResult<List<UserViewDto>> GetAll()
@@ -52,12 +50,10 @@ namespace ApartmentManagement.Business.Concrete
 
             return new SuccessDataResult<List<UserViewDto>>(userList);
         }
-
-
-
+        
         public IResult Add(User newUser)
         {
-            newUser.IuserId = _currentUserId;
+            newUser.IuserId = _httpContextAccessor.HttpContext.User.GetLoggedUserId();
             newUser.Idate = DateTime.Now;
             _userDal.Add(newUser);
             return new SuccessResult();
@@ -152,7 +148,7 @@ namespace ApartmentManagement.Business.Concrete
             }
 
             user.IsActive = false;
-            user.UuserId = _currentUserId;
+            user.UuserId = _httpContextAccessor.HttpContext.User.GetLoggedUserId();
             user.Udate = DateTime.Now;
             _userDal.Update(user);
 
@@ -161,9 +157,9 @@ namespace ApartmentManagement.Business.Concrete
 
         public IResult Update(UserUpdateDto userUpdateInfo)
         {
-            var updateUser = GetById(userUpdateInfo.Id);
+            var updateUser = GetUserById(userUpdateInfo.Id);
             updateUser = _mapper.Map(userUpdateInfo, updateUser);
-            updateUser.UuserId = _currentUserId;
+            updateUser.UuserId = _httpContextAccessor.HttpContext.User.GetLoggedUserId();
             updateUser.Udate = DateTime.Now;
             _userDal.Update(updateUser);
 
@@ -176,7 +172,7 @@ namespace ApartmentManagement.Business.Concrete
             return user;
         }
 
-        public User GetById(int userId)
+        public User GetUserById(int userId)
         {
             var user = _userDal.Get(x => x.Id == userId);
             return user;
@@ -208,7 +204,7 @@ namespace ApartmentManagement.Business.Concrete
 
         public IResult PasswordReset(int userId)
         {
-            var userToCheck = GetById(userId);
+            var userToCheck = GetUserById(userId);
 
             if (userToCheck is null)
             {

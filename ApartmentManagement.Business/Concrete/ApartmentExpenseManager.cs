@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ApartmentManagement.Business.Abstract;
 using ApartmentManagement.Business.Constant;
+using ApartmentManagement.Core.Extensions;
 using ApartmentManagement.Core.Utilities.Result;
 using ApartmentManagement.DataAccess.Abstract;
 using ApartmentManagement.Entities.Concrete;
@@ -21,8 +22,6 @@ namespace ApartmentManagement.Business.Concrete
         private IMapper _mapper;
         private IHttpContextAccessor _httpContextAccessor;
         private IApartmentService _apartmentManager;
-        private int _currentUserId;
-
 
         public ApartmentExpenseManager(IApartmentExpenseDal apartmentExpenseDal, IMapper mapper, IHttpContextAccessor httpContextAccessor, IApartmentService apartmentManager)
         {
@@ -30,8 +29,7 @@ namespace ApartmentManagement.Business.Concrete
             _httpContextAccessor = httpContextAccessor;
             _apartmentManager = apartmentManager;
             _apartmentExpenseDal = apartmentExpenseDal;
-            _currentUserId = Convert.ToInt32(_httpContextAccessor.HttpContext.User.Claims
-                .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value);
+            
         }
 
         public IResult Add(ApartmentExpenseAddDto apartmentExpenseAddDto)
@@ -45,7 +43,7 @@ namespace ApartmentManagement.Business.Concrete
             var newApartmentExpense = _mapper.Map<ApartmentExpense>(apartmentExpenseAddDto);
             newApartmentExpense.DidPay = false;
             newApartmentExpense.IsActive = true;
-            newApartmentExpense.IuserId = _currentUserId;
+            newApartmentExpense.IuserId = _httpContextAccessor.HttpContext.User.GetLoggedUserId();
             newApartmentExpense.Idate = DateTime.Now;
             _apartmentExpenseDal.Add(newApartmentExpense);
             return new SuccessResult(Messages.ApartmentExpenseAdded);
@@ -60,7 +58,7 @@ namespace ApartmentManagement.Business.Concrete
 
         public IDataResult<List<ApartmentExpenseViewDto>> GetUnPaidPayments()
         {
-            var apartmentId = _apartmentManager.GetIdByResidentId(_currentUserId);
+            var apartmentId = _apartmentManager.GetIdByResidentId(_httpContextAccessor.HttpContext.User.GetLoggedUserId());
             var unpaidPayments = _apartmentExpenseDal.GetUnPaidPayments(x=>x.ApartmentId==apartmentId);
             if (unpaidPayments is null)
             {
@@ -73,7 +71,7 @@ namespace ApartmentManagement.Business.Concrete
      
         public IDataResult<List<ApartmentExpenseViewDto>> GetPaidPayments()
         {
-            var apartmentId = _apartmentManager.GetIdByResidentId(_currentUserId);
+            var apartmentId = _apartmentManager.GetIdByResidentId(_httpContextAccessor.HttpContext.User.GetLoggedUserId());
             var paidPayments = _apartmentExpenseDal.GetPaidPayments(x => x.ApartmentId == apartmentId);
             if (paidPayments is null)
             {

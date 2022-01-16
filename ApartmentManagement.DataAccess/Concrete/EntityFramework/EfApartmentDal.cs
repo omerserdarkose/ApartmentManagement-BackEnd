@@ -16,28 +16,28 @@ namespace ApartmentManagement.DataAccess.Concrete.EntityFramework
 
             using (var context = new ApartmentManagementDbContext())
             {
-                var result = from apartment in context.Apartments
-                             join block in context.Blocks
-                                 on apartment.BlockId equals block.Id
-                             join user in context.Users
-                                on apartment.OwnerId equals user.Id
-                             join user2 in context.Users
-                                 on apartment.HirerId equals user2.Id into bb
-                             from hirer in bb.DefaultIfEmpty()
-                             select new ApartmentViewDto()
-                             {
-                                 Id = apartment.Id,
-                                 OwnerId = apartment.OwnerId,
-                                 OwnerName = user.FirstName + " " + user.LastName,
-                                 HirerId = hirer.Id,
-                                 HirerName = hirer.FirstName==null?null:(hirer.FirstName+ " " + hirer.LastName),
-                                 BlockId = apartment.BlockId,
-                                 Block = block.Letter,
-                                 Floor = apartment.Floor,
-                                 DoorNumber = apartment.DoorNumber,
-                                 Status = apartment.Status,
-                                 Type = apartment.Type
-                             };
+                var result = (from apartment in context.Apartments
+                    join block in context.Blocks
+                        on apartment.BlockId equals block.Id
+                    join user in context.Users
+                        on apartment.OwnerId equals user.Id
+                    join user2 in context.Users
+                        on apartment.HirerId equals user2.Id into bb
+                    from hirer in bb.DefaultIfEmpty()
+                    select new ApartmentViewDto()
+                    {
+                        Id = apartment.Id,
+                        OwnerId = apartment.OwnerId,
+                        OwnerName = user.FirstName + " " + user.LastName,
+                        HirerId = hirer.Id,
+                        HirerName = hirer.FirstName == null ? null : (hirer.FirstName + " " + hirer.LastName),
+                        BlockId = apartment.BlockId,
+                        Block = block.Letter,
+                        Floor = apartment.Floor,
+                        DoorNumber = apartment.DoorNumber,
+                        Status = apartment.Status,
+                        Type = apartment.Type
+                    }).OrderBy(x=>x.Block).ThenBy(x=>x.DoorNumber);
                 return result.ToList();
             }
         }

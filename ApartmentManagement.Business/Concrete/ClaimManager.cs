@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ApartmentManagement.Business.Abstract;
 using ApartmentManagement.Business.Constant;
+using ApartmentManagement.Core.Extensions;
 using ApartmentManagement.Core.Utilities.Result;
 using ApartmentManagement.DataAccess.Abstract;
 using ApartmentManagement.Entities.Dtos.Claim;
@@ -20,16 +21,11 @@ namespace ApartmentManagement.Business.Concrete
         private IClaimDal _claimDal;
         private IMapper _mapper;
         private IHttpContextAccessor _httpContextAccessor;
-        private int _currentUserId;
-
-
         public ClaimManager(IClaimDal claimDal, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             _claimDal = claimDal;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
-            _currentUserId = Convert.ToInt32(_httpContextAccessor.HttpContext.User.Claims
-                .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value);
         }
 
         public IDataResult<List<ClaimViewDto>> GetAll()
@@ -53,7 +49,7 @@ namespace ApartmentManagement.Business.Concrete
             }
 
             var newClaim = _mapper.Map<Claim>(claimAddDto);
-            newClaim.IuserId = _currentUserId;
+            newClaim.IuserId = _httpContextAccessor.HttpContext.User.GetLoggedUserId();
             newClaim.Idate = DateTime.Now;
             _claimDal.Add(newClaim);
             return new SuccessResult(Messages.ClaimAdded);
@@ -68,7 +64,7 @@ namespace ApartmentManagement.Business.Concrete
             }
 
             claim = _mapper.Map(claimUpdateDto, claim);
-            claim.UuserId = _currentUserId;
+            claim.UuserId = _httpContextAccessor.HttpContext.User.GetLoggedUserId();
             claim.Udate = DateTime.Now;
             _claimDal.Add(claim);
             return new SuccessResult(Messages.ClaimUpdated);
@@ -83,7 +79,7 @@ namespace ApartmentManagement.Business.Concrete
             }
 
             claim.IsActive = false;
-            claim.UuserId = _currentUserId;
+            claim.UuserId = _httpContextAccessor.HttpContext.User.GetLoggedUserId();
             claim.Udate = DateTime.Now;
             _claimDal.Update(claim);
             return new SuccessResult(Messages.ClaimRemoved);

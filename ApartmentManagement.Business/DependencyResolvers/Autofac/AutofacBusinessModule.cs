@@ -26,10 +26,10 @@ namespace ApartmentManagement.Business.DependencyResolvers.Autofac
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<ExpenseTypeManager>().As<IExpenseTypeService>();
+            builder.RegisterType<ExpenseTypeManager>().As<IExpenseTypeService>().InstancePerRequest();
             builder.RegisterType<EfExpenseTypeDal>().As<IExpenseTypeDal>();
             
-            builder.RegisterType<UserManager>().As<IUserService>();
+            builder.RegisterType<UserManager>().As<IUserService>().InstancePerRequest();
             builder.RegisterType<EfUserDal>().As<IUserDal>();
 
             builder.RegisterType<EfUserDetailDal>().As<IUserDetailDal>();
@@ -49,7 +49,7 @@ namespace ApartmentManagement.Business.DependencyResolvers.Autofac
 
             builder.RegisterType<EfUserMessageDal>().As<IUserMessageDal>();
             builder.RegisterType<UserMessageManager>().As<IUserMessageService>();
-            
+
             builder.RegisterType<EfCarDal>().As<ICarDal>();
             builder.RegisterType<CarManager>().As<ICarService>();
 

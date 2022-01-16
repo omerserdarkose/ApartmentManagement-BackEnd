@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ApartmentManagement.Business.Abstract;
 using ApartmentManagement.Business.Constant;
 using ApartmentManagement.Core.Entities.Concrete;
+using ApartmentManagement.Core.Extensions;
 using ApartmentManagement.Core.Utilities.Result;
 using ApartmentManagement.DataAccess.Abstract;
 using ApartmentManagement.Entities.Dtos.User;
@@ -22,15 +23,11 @@ namespace ApartmentManagement.Business.Concrete
         private IUserClaimDal _userClaimDal;
         private IMapper _mapper;
         private IHttpContextAccessor _httpContextAccessor;
-        private int _currentUserId;
-
         public UserClaimManager(IUserClaimDal userClaimDal, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             _userClaimDal = userClaimDal;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
-            _currentUserId = Convert.ToInt32(_httpContextAccessor.HttpContext.User.Claims
-                .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value);
         }
 
         public IDataResult<List<UserClaimListViewDto>> GetUserClaimList()
@@ -52,7 +49,7 @@ namespace ApartmentManagement.Business.Concrete
             }
 
             var newUserClaim = _mapper.Map<UserClaim>(userClaimAddDto);
-            newUserClaim.IuserId = _currentUserId;
+            newUserClaim.IuserId = _httpContextAccessor.HttpContext.User.GetLoggedUserId();
             newUserClaim.Idate = DateTime.Now;
             _userClaimDal.Add(newUserClaim);
             return new SuccessResult(Messages.UserClaimAdded);
@@ -64,7 +61,7 @@ namespace ApartmentManagement.Business.Concrete
             {
                 UserId = userId,
                 ClaimId = claimId,
-                IuserId = _currentUserId,
+                IuserId = _httpContextAccessor.HttpContext.User.GetLoggedUserId(),
                 Idate = DateTime.Now
             });
             return new SuccessResult(Messages.UserClaimAdded);
@@ -79,7 +76,7 @@ namespace ApartmentManagement.Business.Concrete
             }
 
             userClaim = _mapper.Map(userClaimUpdateDto, userClaim);
-            userClaim.UuserId = _currentUserId;
+            userClaim.UuserId = _httpContextAccessor.HttpContext.User.GetLoggedUserId();
             userClaim.Udate = DateTime.Now;
             _userClaimDal.Add(userClaim);
             return new SuccessResult(Messages.UserClaimUpdated);
@@ -100,7 +97,7 @@ namespace ApartmentManagement.Business.Concrete
             }
 
             userClaim.IsActive = false;
-            userClaim.UuserId = _currentUserId;
+            userClaim.UuserId = _httpContextAccessor.HttpContext.User.GetLoggedUserId();
             userClaim.Udate = DateTime.Now;
             _userClaimDal.Update(userClaim);
             return new SuccessResult(Messages.CarRemoved);

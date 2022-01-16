@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ApartmentManagement.Business.Abstract;
 using ApartmentManagement.Business.Constant;
+using ApartmentManagement.Core.Extensions;
 using ApartmentManagement.Core.Utilities.Result;
 using ApartmentManagement.DataAccess.Abstract;
 using ApartmentManagement.Entities.Concrete;
@@ -20,15 +21,12 @@ namespace ApartmentManagement.Business.Concrete
         private ICarDal _carDal;
         private IMapper _mapper;
         private IHttpContextAccessor _httpContextAccessor;
-        private int _currentUserId;
-        
+       
         public CarManager(ICarDal carDal, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             _carDal = carDal;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
-            _currentUserId = Convert.ToInt32(_httpContextAccessor.HttpContext.User.Claims
-                .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value);
         }
 
 
@@ -41,7 +39,7 @@ namespace ApartmentManagement.Business.Concrete
             }
 
             var newCar = _mapper.Map<Car>(carAddDto);
-            newCar.IuserId = _currentUserId;
+            newCar.IuserId = _httpContextAccessor.HttpContext.User.GetLoggedUserId();
             newCar.Idate=DateTime.Now;
             newCar.IsActive = true;
             _carDal.Add(newCar);
@@ -77,7 +75,7 @@ namespace ApartmentManagement.Business.Concrete
             }
 
             car = _mapper.Map(carUpdateDto, car);
-            car.UuserId = _currentUserId;
+            car.UuserId = _httpContextAccessor.HttpContext.User.GetLoggedUserId();
             car.Udate = DateTime.Now;
             _carDal.Add(car);
             return new SuccessResult(Messages.CarUpdated);
@@ -92,7 +90,7 @@ namespace ApartmentManagement.Business.Concrete
             }
 
             car.IsActive = false;
-            car.UuserId = _currentUserId;
+            car.UuserId = _httpContextAccessor.HttpContext.User.GetLoggedUserId();
             car.Udate = DateTime.Now;
             _carDal.Update(car);
             return new SuccessResult(Messages.CarRemoved);
