@@ -21,14 +21,12 @@ namespace ApartmentManagement.Business.Concrete
     public class UserMessageManager:IUserMessageService
     {
         private IUserMessageDal _userMessageDal;
-        private IMessageService _messageManager;
         private IUserService _userManager;
         private IMapper _mapper;
         private IHttpContextAccessor _httpContextAccessor;
-        public UserMessageManager(IUserMessageDal userMessageDal, IMessageService messageManager, IMapper mapper, IUserService userManager, IHttpContextAccessor httpContextAccessor)
+        public UserMessageManager(IUserMessageDal userMessageDal,IMapper mapper, IUserService userManager, IHttpContextAccessor httpContextAccessor)
         {
             _userMessageDal = userMessageDal;
-            _messageManager = messageManager;
             _mapper = mapper;
             _userManager = userManager;
             _httpContextAccessor = httpContextAccessor;

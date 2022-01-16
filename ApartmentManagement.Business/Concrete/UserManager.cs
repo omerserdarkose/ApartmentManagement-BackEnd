@@ -71,7 +71,7 @@ namespace ApartmentManagement.Business.Concrete
                 //hata mesaji veriliyor
                 return new ErrorResult(Messages.UserAlreadyExist);
             }
-            //zXZqda4z%2
+
             //yeni kullanici icin parola olusturuluyor
             var password = PasswordHelper.CreatePassword();
 

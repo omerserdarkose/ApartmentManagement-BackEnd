@@ -79,5 +79,6 @@ namespace ApartmentManagement.Business.Constant
         public static string ExpenseListNotFound="Ödenmemiş veya Aktif Olan Gider Bulunmamaktadır";
         public static string ExpenseFilterListNotFound="Belirtilen Tarih İçin Ödenmemiş veya Aktif Olan Gider Bulunmamaktadır";
         public static string PaidPaymentsNotFound = "Ödenmiş Faturanız Bulunmamaktadır";
+        public static string AuthorizationDenied="Bu İşlem İçin Yetkiniz Bulunmamaktadır";
     }
 }

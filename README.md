@@ -1,0 +1,13 @@
+- Genel yapı olarak katmanlı mimari uygulandı.
+- SOLID prensiplerinin uygulanmasına azami dikkat edildi
+- SQL tablo dizaynlarında tüm veriyi az sayıda tabloya sığdırmaktansa amaca yönelik ve sorgu performanslarını arttıracak şekilde dizayna dikkat edildi.
+- Repository Pattern Uygulandı.
+- Aspect yapısı entegre edildi. (Core>Utilities>Interceptors)
+- Yetki kontrolü, Transaction işlemler ve Validation için aspect yazıldı (Core>Aspects,   Business>Aspects)
+- MongoDb entegre edildi.(DataAccess>Concrete>Mongo) WebApi üzerinden erişim check edildi. MongoDb işlemlerini statik IP ayarlanmış bir api üzerinden ve dışarıya kapalı şekilde ayarlaması tamamlanmadı. Halihazırda webApi üzerinden genel erişime açık. Müteakip dönemde tek adresten erişeme imkan sağlayacak hale getirilecek.
+- Dependency yönetimi için Autofac kullanıldı.
+- Toplu/Tek mesaj gönderimi (Business>Concrete>MessageManager), 
+- Toplu/Tek Gider ekleme yapısı aktifleştirildi(Business>Concrete>ExpenseManager).
+- Mesajlarin okunmuş/okunmamış veya yeni olduğu bilgisi kontrol edilebilir durumda.
+- Cache ve Backgroundjob altyapısı tamamlanamadı. (4. ve 5. ödevlerde mevcut)
+- Frontend kısmında eksikler mevcut. Proje Linki: [Frontend](https://github.com/omerserdarkose/ApartmentManagement-FrontEnd)

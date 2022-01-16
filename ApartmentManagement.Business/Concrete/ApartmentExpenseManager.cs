@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using ApartmentManagement.Business.Abstract;
+using ApartmentManagement.Business.Aspects.Autofac;
 using ApartmentManagement.Business.Constant;
 using ApartmentManagement.Core.Extensions;
 using ApartmentManagement.Core.Utilities.Result;
@@ -56,9 +57,8 @@ namespace ApartmentManagement.Business.Concrete
             throw new NotImplementedException();
         }
 
-        //gonderilen apartman numarasina gore odenmemis faturalari donduren method
-        //admin bu fonksiyonu kullanirken apartman numarasini yollayacak
-        //eger kullanici kendi bilgilerini istiyorsa fronntendden sabit -1 ile funk cagirilacak burada mevcut kullanici idsine gore apartman no bulunup o bilgi donulecek
+        //admin icin kullanimda olan herhangi bir apartmana ait yapilmayan odemeleri getiren fonksiyon
+        [SecuredOperation("admin")]
         public IDataResult<List<ApartmentExpenseViewDto>> GetUnPaidPayments(int apartmentId)
         {
            
@@ -72,9 +72,8 @@ namespace ApartmentManagement.Business.Concrete
         }
 
 
-        //gonderilen apartman numarasina gore odenmemis faturalari donduren method
-        //admin bu fonksiyonu kullanirken apartman numarasini yollayacak
-        //eger kullanici kendi bilgilerini istiyorsa fronntendden sabit -1 ile funk cagirilacak burada mevcut kullanici idsine gore apartman no bulunup o bilgi donulecek
+        //admin icin kullanimda olan herhangi bir apartmana ait yapilan odemeleri getiren fonksiyon
+        [SecuredOperation("admin")]
         public IDataResult<List<ApartmentExpenseViewDto>> GetPaidPayments(int apartmentId)
         {
             if (apartmentId < 0)
@@ -91,6 +90,7 @@ namespace ApartmentManagement.Business.Concrete
             return new SuccessDataResult<List<ApartmentExpenseViewDto>>(paidPayments);
         }
 
+        //[SecuredOperation("admin,user")]
         public IDataResult<List<ApartmentExpenseViewDto>> GetMyUnPaidPayments()
         {
             var apartmentId = _apartmentManager.GetIdByResidentId(_httpContextAccessor.HttpContext.User.GetLoggedUserId());
@@ -98,6 +98,7 @@ namespace ApartmentManagement.Business.Concrete
             return new SuccessDataResult<List<ApartmentExpenseViewDto>>(result.Data);
         }
 
+        //[SecuredOperation("admin,user")]
         public IDataResult<List<ApartmentExpenseViewDto>> GetMyPaidPayments()
         {
             var apartmentId = _apartmentManager.GetIdByResidentId(_httpContextAccessor.HttpContext.User.GetLoggedUserId());

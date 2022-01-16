@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using ApartmentManagement.Business.Abstract;
+using ApartmentManagement.Business.Aspects.Autofac;
 using ApartmentManagement.Business.Constant;
 using ApartmentManagement.Core.Aspects.Autofac;
 using ApartmentManagement.Core.Extensions;
@@ -48,7 +49,7 @@ namespace ApartmentManagement.Business.Concrete
             _messageDal.Add(newMessage);
         }
 
-        //[SecuredOperation(Roles:("admin"))]
+        [SecuredOperation("admin")]
         [TransactionScopeAspect]
         public IResult SendMessageToAll(MessageAddDto messageAddForAllDto)
         {

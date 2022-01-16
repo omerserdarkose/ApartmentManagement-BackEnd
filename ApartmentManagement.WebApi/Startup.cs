@@ -12,6 +12,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ApartmentManagement.Core.DependencyResolver;
+using ApartmentManagement.Core.Extensions;
+using ApartmentManagement.Core.Utilities.IoC;
 using ApartmentManagement.Core.Utilities.Security;
 using ApartmentManagement.Core.Utilities.Security.Encryption;
 using ApartmentManagement.Core.Utilities.Settings;
@@ -36,8 +39,6 @@ namespace ApartmentManagement.WebApi
             services.AddControllers();
 
             services.AddAutoMapper(typeof(MappingProfile));
-
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddSwaggerGen(c =>
             {
@@ -68,6 +69,8 @@ namespace ApartmentManagement.WebApi
                     ValidAudience = tokenOptions.Audience,
                     IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
                 });
+
+            services.AddDependencyResolvers(new ICoreModule[] { new CoreModule() });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
