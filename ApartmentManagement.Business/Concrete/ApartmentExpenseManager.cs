@@ -56,9 +56,12 @@ namespace ApartmentManagement.Business.Concrete
             throw new NotImplementedException();
         }
 
-        public IDataResult<List<ApartmentExpenseViewDto>> GetUnPaidPayments()
+        //gonderilen apartman numarasina gore odenmemis faturalari donduren method
+        //admin bu fonksiyonu kullanirken apartman numarasini yollayacak
+        //eger kullanici kendi bilgilerini istiyorsa fronntendden sabit -1 ile funk cagirilacak burada mevcut kullanici idsine gore apartman no bulunup o bilgi donulecek
+        public IDataResult<List<ApartmentExpenseViewDto>> GetUnPaidPayments(int apartmentId)
         {
-            var apartmentId = _apartmentManager.GetIdByResidentId(_httpContextAccessor.HttpContext.User.GetLoggedUserId());
+           
             var unpaidPayments = _apartmentExpenseDal.GetUnPaidPayments(x=>x.ApartmentId==apartmentId);
             if (unpaidPayments is null)
             {
@@ -68,10 +71,17 @@ namespace ApartmentManagement.Business.Concrete
             return new SuccessDataResult<List<ApartmentExpenseViewDto>>(unpaidPayments);
         }
 
-     
-        public IDataResult<List<ApartmentExpenseViewDto>> GetPaidPayments()
+
+        //gonderilen apartman numarasina gore odenmemis faturalari donduren method
+        //admin bu fonksiyonu kullanirken apartman numarasini yollayacak
+        //eger kullanici kendi bilgilerini istiyorsa fronntendden sabit -1 ile funk cagirilacak burada mevcut kullanici idsine gore apartman no bulunup o bilgi donulecek
+        public IDataResult<List<ApartmentExpenseViewDto>> GetPaidPayments(int apartmentId)
         {
-            var apartmentId = _apartmentManager.GetIdByResidentId(_httpContextAccessor.HttpContext.User.GetLoggedUserId());
+            if (apartmentId < 0)
+            {
+                apartmentId = _apartmentManager.GetIdByResidentId(_httpContextAccessor.HttpContext.User.GetLoggedUserId());
+            }
+
             var paidPayments = _apartmentExpenseDal.GetPaidPayments(x => x.ApartmentId == apartmentId);
             if (paidPayments is null)
             {
@@ -79,6 +89,20 @@ namespace ApartmentManagement.Business.Concrete
             }
 
             return new SuccessDataResult<List<ApartmentExpenseViewDto>>(paidPayments);
+        }
+
+        public IDataResult<List<ApartmentExpenseViewDto>> GetMyUnPaidPayments()
+        {
+            var apartmentId = _apartmentManager.GetIdByResidentId(_httpContextAccessor.HttpContext.User.GetLoggedUserId());
+            var result = GetUnPaidPayments(apartmentId);
+            return new SuccessDataResult<List<ApartmentExpenseViewDto>>(result.Data);
+        }
+
+        public IDataResult<List<ApartmentExpenseViewDto>> GetMyPaidPayments()
+        {
+            var apartmentId = _apartmentManager.GetIdByResidentId(_httpContextAccessor.HttpContext.User.GetLoggedUserId());
+            var result = GetPaidPayments(apartmentId);
+            return new SuccessDataResult<List<ApartmentExpenseViewDto>>(result.Data);
         }
 
         public bool IsFullyPaid(int expenseId)

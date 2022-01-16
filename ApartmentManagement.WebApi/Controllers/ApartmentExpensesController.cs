@@ -20,18 +20,30 @@ namespace ApartmentManagement.WebApi.Controllers
         }
 
 
-        [HttpGet]
-        public IActionResult Get()
+        [HttpGet("unpaid/{apartmentId}")]
+        public IActionResult GetUnPaidPayments(int apartmentId)
         {
-            return Ok(_apartmentExpenseManager.GetUnPaidPayments());
+            return Ok(_apartmentExpenseManager.GetUnPaidPayments(apartmentId));
         }
 
-
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("paid/{apartmentId}")]
+        public IActionResult GetPaidPayments(int apartmentId)
         {
-            return "value";
+            return Ok(_apartmentExpenseManager.GetPaidPayments(apartmentId));
         }
+
+        [HttpGet("unpaid")]
+        public IActionResult GetMyUnPaidPayments()
+        {
+            return Ok(_apartmentExpenseManager.GetMyUnPaidPayments());
+        }
+
+        [HttpGet("paid")]
+        public IActionResult GetMyPaidPayments()
+        {
+            return Ok(_apartmentExpenseManager.GetMyPaidPayments());
+        }
+
 
         [HttpPost]
         public void Post([FromBody] string value)
