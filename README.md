@@ -9,5 +9,4 @@
 - Toplu/Tek mesaj gönderimi (Business>Concrete>MessageManager), 
 - Toplu/Tek Gider ekleme yapısı aktifleştirildi(Business>Concrete>ExpenseManager).
 - Mesajlarin okunmuş/okunmamış veya yeni olduğu bilgisi kontrol edilebilir durumda.
-- Cache ve Backgroundjob altyapısı tamamlanamadı. (4. ve 5. ödevlerde mevcut)
-- Frontend kısmında eksikler mevcut. Proje Linki: [Frontend](https://github.com/omerserdarkose/ApartmentManagement-FrontEnd)
+- Frontend Proje Linki: [Frontend](https://github.com/omerserdarkose/ApartmentManagement-FrontEnd)
