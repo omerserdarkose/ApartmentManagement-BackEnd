@@ -11,9 +11,9 @@ namespace ApartmentManagement.Entities.Dtos.UserMessage
     {
         public int Id { get; set; }
         public string ToUserName { get; set; }
+        public int MessageId { get; set; }
         public string MessageSubject { get; set; }
-        public string MessageText { get; set; }
-        public bool IsRead { get; set; }
+        public bool IsNew { get; set; }
         public bool IsActive { get; set; }
         public DateTime MessageDate { get; set; }
         public string ToUserClaim { get; set; }

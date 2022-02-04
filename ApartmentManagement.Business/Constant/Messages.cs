@@ -80,5 +80,9 @@ namespace ApartmentManagement.Business.Constant
         public static string ExpenseFilterListNotFound="Belirtilen Tarih İçin Ödenmemiş veya Aktif Olan Gider Bulunmamaktadır";
         public static string PaidPaymentsNotFound = "Ödenmiş Faturanız Bulunmamaktadır";
         public static string AuthorizationDenied="Bu İşlem İçin Yetkiniz Bulunmamaktadır";
+        public static string MessageNotFound = "Bu Id ile Kayıtlı Mesaj Bulunmamaktadır";
+        public static string UserMessageNotFound="Belirtilen Mesaj Bulunamadi";
+        public static string UserMessageUpdated = "Belirtilen Mesaj Bilgisi Güncellendi";
+        public static string UserMessageRemoved="Belirtilen Mesaj Kaldırıldı";
     }
 }

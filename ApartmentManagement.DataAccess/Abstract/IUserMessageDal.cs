@@ -1,6 +1,8 @@
-﻿using ApartmentManagement.Core.DataAccess;
+﻿using System;
+using ApartmentManagement.Core.DataAccess;
 using ApartmentManagement.Entities.Concrete;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using ApartmentManagement.Entities.Dtos.UserMessage;
 
 namespace ApartmentManagement.DataAccess.Abstract

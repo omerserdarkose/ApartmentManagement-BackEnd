@@ -42,15 +42,23 @@ namespace ApartmentManagement.WebApi.Controllers
         }
 
 
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut("{id:int}&status={status:bool}")]
+        public IActionResult UpdateReadStatus(int id,bool status)
         {
+            return Ok(_userMessageManager.UpdateReadStatus(id,status));
         }
 
 
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("{id}&isSender={isSender:bool}")]
+        public IActionResult Delete(int id,bool isSender)
         {
+            var result = _userMessageManager.Delete(id, isSender);
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
         }
     }
 }

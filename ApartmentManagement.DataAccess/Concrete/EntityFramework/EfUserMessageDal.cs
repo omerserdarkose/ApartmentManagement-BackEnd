@@ -1,8 +1,10 @@
-﻿using ApartmentManagement.Core.DataAccess.EntitiyFramework;
+﻿using System;
+using ApartmentManagement.Core.DataAccess.EntitiyFramework;
 using ApartmentManagement.DataAccess.Abstract;
 using ApartmentManagement.Entities.Concrete;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using ApartmentManagement.DataAccess.Context;
 using ApartmentManagement.Entities.Dtos.UserMessage;
 
@@ -27,7 +29,7 @@ namespace ApartmentManagement.DataAccess.Concrete.EntityFramework
                                   on a.BlockId equals b.Id
                               join m in context.Messages
                                   on um.MessageId equals m.Id
-                              where um.ToUserId == userId
+                              where um.ToUserId == userId && um.IsActiveToUser==true
                               select new UserMessageIncomingViewDto()
                               {
                                   Id = um.Id,
@@ -35,8 +37,8 @@ namespace ApartmentManagement.DataAccess.Concrete.EntityFramework
                                   FromUserName = u.FirstName + " " + u.LastName,
                                   FromUserBlock = b.Letter,
                                   FromUserDoorNumber = a.DoorNumber,
+                                  MessageId = m.Id,
                                   MessageSubject = m.Subject,
-                                  MessageText = m.MessageText,
                                   MessageDate = m.Idate,
                                   IsNew = um.IsNew,
                                   IsRead = um.IsRead,
@@ -55,7 +57,7 @@ namespace ApartmentManagement.DataAccess.Concrete.EntityFramework
                                            on a.BlockId equals b.Id
                                        join m in context.Messages
                                            on um.MessageId equals m.Id
-                                       where um.ToUserId == userId
+                                       where um.ToUserId == userId && um.IsActiveToUser == true
                                        select new UserMessageIncomingViewDto()
                                        {
                                            Id = um.Id,
@@ -63,17 +65,16 @@ namespace ApartmentManagement.DataAccess.Concrete.EntityFramework
                                            FromUserName = u.FirstName + " " + u.LastName,
                                            FromUserBlock = b.Letter,
                                            FromUserDoorNumber = a.DoorNumber,
+                                           MessageId = m.Id,
                                            MessageSubject = m.Subject,
-                                           MessageText = m.MessageText,
                                            MessageDate = m.Idate,
                                            IsNew = um.IsNew,
                                            IsRead = um.IsRead,
                                            IsActive = um.IsActiveToUser,
                                            FromUserId = um.FromUserId,
-                                       }).Distinct();
+                                       }).Distinct().OrderByDescending(x=>x.MessageDate);
                 return result.ToList();
             }
-            return new List<UserMessageIncomingViewDto>();
         }
 
         public List<UserMessageSentViewDto> GetSentMessages(int userId)
@@ -93,7 +94,7 @@ namespace ApartmentManagement.DataAccess.Concrete.EntityFramework
                                   on a.BlockId equals b.Id
                               join m in context.Messages
                                   on um.MessageId equals m.Id
-                              where um.FromUserId == userId
+                              where um.FromUserId == userId && um.IsActiveFuser == true
                               select new UserMessageSentViewDto()
                               {
                                   Id = um.Id,
@@ -101,9 +102,10 @@ namespace ApartmentManagement.DataAccess.Concrete.EntityFramework
                                   ToUserName = u.FirstName + " " + u.LastName,
                                   ToUserBlock = b.Letter,
                                   ToUserDoorNumber = a.DoorNumber,
+                                  MessageId = m.Id,
                                   MessageSubject = m.Subject,
-                                  MessageText = m.MessageText,
                                   MessageDate = m.Idate,
+                                  IsNew = um.IsNew,
                                   IsActive = um.IsActiveFuser,
                                   ToUserId = um.ToUserId,
                               }).Union(from um in context.UserMessages
@@ -119,7 +121,7 @@ namespace ApartmentManagement.DataAccess.Concrete.EntityFramework
                                            on a.BlockId equals b.Id
                                        join m in context.Messages
                                            on um.MessageId equals m.Id
-                                       where um.FromUserId == userId
+                                       where um.FromUserId == userId && um.IsActiveFuser == true
                                        select new UserMessageSentViewDto()
                                        {
                                            Id = um.Id,
@@ -127,12 +129,13 @@ namespace ApartmentManagement.DataAccess.Concrete.EntityFramework
                                            ToUserName = u.FirstName + " " + u.LastName,
                                            ToUserBlock = b.Letter,
                                            ToUserDoorNumber = a.DoorNumber,
+                                           MessageId = m.Id,
                                            MessageSubject = m.Subject,
-                                           MessageText = m.MessageText,
                                            MessageDate = m.Idate,
+                                           IsNew = um.IsNew,
                                            IsActive = um.IsActiveFuser,
                                            ToUserId = um.ToUserId,
-                                       }).Distinct();
+                                       }).Distinct().OrderByDescending(x => x.MessageDate);
                 return result.ToList();
             }
         }

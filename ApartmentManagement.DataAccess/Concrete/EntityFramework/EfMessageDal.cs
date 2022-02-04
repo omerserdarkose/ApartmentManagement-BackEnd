@@ -3,6 +3,7 @@ using ApartmentManagement.DataAccess.Abstract;
 using ApartmentManagement.Entities.Concrete;
 using System.Linq;
 using ApartmentManagement.DataAccess.Context;
+using ApartmentManagement.Entities.Dtos.Message;
 
 namespace ApartmentManagement.DataAccess.Concrete.EntityFramework
 {

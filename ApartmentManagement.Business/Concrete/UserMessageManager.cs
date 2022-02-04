@@ -47,6 +47,27 @@ namespace ApartmentManagement.Business.Concrete
             _userMessageDal.Add(newUserMessage);
         }
 
+        public IResult Delete(int userMessageId,bool isSender)
+        {
+            var userMessage = _userMessageDal.Get(x => x.Id == userMessageId);
+            if (userMessage is null)
+            {
+                return new ErrorResult(Messages.UserMessageNotFound);
+            }
+            userMessage.UuserId= _httpContextAccessor.HttpContext.User.GetLoggedUserId();
+            userMessage.Udate = DateTime.Now;
+            if (isSender)
+            {
+                userMessage.IsActiveFuser = false;
+            }
+            else
+            {
+                userMessage.IsActiveToUser = false;
+            }
+            _userMessageDal.Update(userMessage);
+            return new SuccessResult(Messages.UserMessageRemoved);
+        }
+
         public IDataResult<List<UserMessageIncomingViewDto>> GetUserIncomingMessages()
         {
             var incomingMessages = _userMessageDal.GetIncomingMessages(_httpContextAccessor.HttpContext.User.GetLoggedUserId());
@@ -67,6 +88,22 @@ namespace ApartmentManagement.Business.Concrete
             }
 
             return new SuccessDataResult<List<UserMessageSentViewDto>>(sentMessages);
+        }
+
+        public IResult UpdateReadStatus(int userMessageId, bool status, bool newStatus = false)
+        {
+            var userMessage = _userMessageDal.Get(x => x.Id == userMessageId);
+            if (userMessage is null)
+            {
+                return new ErrorResult(Messages.UserMessageNotFound);
+            }
+
+            userMessage.IsRead = status;
+            userMessage.IsNew = newStatus;
+            userMessage.UuserId = _httpContextAccessor.HttpContext.User.GetLoggedUserId();
+            userMessage.Udate = DateTime.Now;
+            _userMessageDal.Update(userMessage);
+            return new SuccessResult(Messages.UserMessageUpdated);
         }
     }
 }

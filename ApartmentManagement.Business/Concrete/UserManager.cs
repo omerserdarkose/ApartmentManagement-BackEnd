@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using ApartmentManagement.Business.Abstract;
+using ApartmentManagement.Business.Aspects.Autofac;
 using ApartmentManagement.Business.Constant;
 using ApartmentManagement.Core.Aspects.Autofac;
 using ApartmentManagement.Core.Entities.Concrete;
@@ -44,6 +45,7 @@ namespace ApartmentManagement.Business.Concrete
             _userClaimManager = userClaimManager;
         }
 
+        [SecuredOperation("admin")]
         public IDataResult<List<UserViewDto>> GetAll()
         {
             var userList = _userDal.GetUserList();

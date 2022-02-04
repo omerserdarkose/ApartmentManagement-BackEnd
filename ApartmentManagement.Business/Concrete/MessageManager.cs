@@ -58,7 +58,7 @@ namespace ApartmentManagement.Business.Concrete
             //eklenen mesajin Id si aliniyor
             var messageId = GetLastMessageId();
             //kullanici listesi getiriliyor
-            var userList = _apartmentManager.GetAllResident();
+            var userList = _userManager.GetAll();
             //herbir kullanici icin mesaj entrysi olusturulup tabloya ekleniyor
             foreach (var user in userList.Data.ToArray())
             {
@@ -106,6 +106,15 @@ namespace ApartmentManagement.Business.Concrete
             return _messageDal.GetLastMessageId();
         }
 
-
+        public IDataResult<MessageViewDto> GetMessageById(int messageId)
+        {
+            var message = _messageDal.Get(x=>x.Id== messageId);
+            if (message is null)
+            {
+                return new ErrorDataResult<MessageViewDto>(Messages.MessageNotFound);
+            }
+            var viewMessage = _mapper.Map<MessageViewDto>(message);
+            return new SuccessDataResult<MessageViewDto>(viewMessage);
+        }
     }
 }

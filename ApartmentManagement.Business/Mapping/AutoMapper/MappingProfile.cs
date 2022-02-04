@@ -74,6 +74,7 @@ namespace ApartmentManagement.Business.Mapping.AutoMapper
             CreateMap<ExpenseAddForOneDto, ExpenseAddForAllDto>();
             CreateMap<ApartmentExpenseAddDto, ApartmentExpense>();
             CreateMap<Payment, PaymentViewDto>();
+            CreateMap<Message, MessageViewDto>();
 
 
 

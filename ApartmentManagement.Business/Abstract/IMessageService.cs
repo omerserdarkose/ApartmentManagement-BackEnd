@@ -15,5 +15,6 @@ namespace ApartmentManagement.Business.Abstract
         IResult SendMessageToOne(MessageAddForOneDto messageAddForOneDto);
         void Add(MessageAddDto messageAddDto);
         int GetLastMessageId();
+        IDataResult<MessageViewDto> GetMessageById(int messageId);
     }
 }
